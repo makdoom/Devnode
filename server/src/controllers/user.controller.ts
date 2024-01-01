@@ -32,10 +32,25 @@ const registerRoute = asyncHandler(
     const isEmailTaken = await User.findOne({ email });
     if (isEmailTaken) throw new ApiError(409, "Email is already in use");
 
-    console.log({ fullName, username, email, password });
-    return res
-      .status(200)
-      .json(new ApiResponse(200, "User registered successfully", {}));
+    const user = await User.create({
+      fullName,
+      username: username.toLowerCase(),
+      email,
+      password,
+    });
+
+    const createdUser = await User.findById(user._id).select(
+      "-password -refreshToken"
+    );
+    if (!createdUser)
+      throw new ApiError(
+        500,
+        "Something went wrong while registering the user"
+      );
+
+    res
+      .status(201)
+      .json(new ApiResponse(200, "User created successfully", createdUser));
   }
 );
 
