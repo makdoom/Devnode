@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 import { PAYLOAD_LIMIT } from "./constant";
+import { errorHandler, notFound } from "./middlewares/errorMiddleware";
 
 // Initialize express app
 const app = express();
@@ -17,5 +19,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;
