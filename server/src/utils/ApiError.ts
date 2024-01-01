@@ -1,6 +1,6 @@
 class ApiError extends Error {
-  statusCode: number;
   success: boolean;
+  statusCode: number;
 
   constructor(statusCode: number = 500, message: string) {
     // Calling the base class constructor with the error message
@@ -10,8 +10,8 @@ class ApiError extends Error {
     Object.setPrototypeOf(this, ApiError.prototype);
 
     // Set the status code & success
-    this.statusCode = statusCode;
     this.success = false;
+    this.statusCode = statusCode;
 
     // Capture the error stack
     Error.captureStackTrace(this, this.constructor);
