@@ -7,8 +7,8 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const errorHandler = (err, req: Request, res: Response, next: NextFunction) => {
-  let statusCode = res.statusCode == 200 ? 500 : res.statusCode;
-  let message = err.message;
+  let statusCode = err.statusCode ? err?.statusCode : 500;
+  let message = err.message ? err.message : "Internal Server Error";
 
   // Mongoose special type of error
   if (err?.name == "CastError" && err?.kind === "ObjectId") {
@@ -20,7 +20,7 @@ const errorHandler = (err, req: Request, res: Response, next: NextFunction) => {
     statusCode,
     message,
     stack: process.env.NODE_ENV === "production" ? null : err?.stack,
-    success: 0,
+    success: false,
   });
 };
 
