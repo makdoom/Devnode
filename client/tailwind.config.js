@@ -72,6 +72,15 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    // fontSize: {
+    //   sm: "12px",
+    //   base: "14px",
+    //   xl: "16px",
+    //   "2xl": "20px",
+    //   "3xl": "28px",
+    //   "4xl": "38px",
+    //   "5xl": "50px",
+    // },
     fontFamily: {
       inter: ["Inter", "sans-serif"],
     },
