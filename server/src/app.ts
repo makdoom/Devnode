@@ -19,6 +19,13 @@ app.use(
     credentials: true,
   })
 );
+
+// Routes
+import userRouter from "./routes/user.routes";
+
+// Routes declaration
+app.use("/api/v1/users", userRouter);
+
 app.use(notFound);
 app.use(errorHandler);
 
