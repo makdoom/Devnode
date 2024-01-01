@@ -1,4 +1,5 @@
 import App from "@/App";
+import Hero from "@/components/Hero";
 import {
   Route,
   createBrowserRouter,
@@ -8,7 +9,7 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="" element={<h1>Hello React</h1>} />
+      <Route path="" element={<Hero />} />
     </Route>
   )
 );
