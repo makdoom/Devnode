@@ -21,10 +21,10 @@ const Register = () => {
               <Input type="text" placeholder="Full Name" autoFocus />
             </div>
             <div className="mt-4">
-              <Input type="text" placeholder="Username" autoFocus />
+              <Input type="text" placeholder="Username" />
             </div>
             <div className="mt-4">
-              <Input type="email" placeholder="Email" autoFocus />
+              <Input type="email" placeholder="Email" />
             </div>
 
             <div className="mt-4">
