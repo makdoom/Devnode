@@ -2,6 +2,7 @@ import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import Drawer from "./Drawer";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -19,7 +20,9 @@ const Header = () => {
       </div>
 
       <div className="hidden sm:flex sm:gap-3">
-        <Button variant="secondary">Login</Button>
+        <Link to="/auth/login">
+          <Button variant="secondary">Login</Button>
+        </Link>
         <Button>Register</Button>
       </div>
 
