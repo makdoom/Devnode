@@ -1,14 +1,15 @@
 import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "./ui/menubar";
+import { useState } from "react";
+import Drawer from "./Drawer";
 
 const Header = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleDrawerOpen = () => setIsDrawerOpen(true);
+
+  const handleDrawerClose = () => setIsDrawerOpen(false);
+
   return (
     <div className="w-full py-2 p-4 sm:py-4 flex items-center justify-between border border-secondary sticky top-0 z-10 shadow-sm">
       <div className="w-full">
@@ -22,19 +23,15 @@ const Header = () => {
         <Button>Register</Button>
       </div>
 
-      <Menubar className="sm:hidden p-0 rounded-full border-none">
-        <MenubarMenu>
-          <MenubarTrigger className="rounded-full p-0 border-none">
-            {/* <div className="sm:hidden h-[42px] w-[45px] flex justify-center items-center border border-secondary rounded-full"> */}
-            <Menu className="h-5 w-5" />
-            {/* </div> */}
-          </MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>Login</MenubarItem>
-            <MenubarItem>Register</MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-      </Menubar>
+      <div className="block sm:hidden">
+        <Menu className="h-5 w-5" onClick={handleDrawerOpen} />
+        <Drawer isOpen={isDrawerOpen} onClose={handleDrawerClose}>
+          <div className="px-4 flex flex-col gap-3">
+            <Button variant="secondary">Login</Button>
+            <Button>Register</Button>
+          </div>
+        </Drawer>
+      </div>
     </div>
   );
 };
