@@ -1,6 +1,7 @@
 import App from "@/App";
 import Hero from "@/components/Hero";
 import Login from "@/pages/Login";
+import Register from "@/pages/Register/Register";
 import {
   Route,
   createBrowserRouter,
@@ -15,7 +16,7 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/register" element={<Login />} />
+      <Route path="/auth/register" element={<Register />} />
     </>
   )
 );

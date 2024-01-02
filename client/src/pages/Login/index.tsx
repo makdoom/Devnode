@@ -19,17 +19,17 @@ const Login = () => {
               <Input type="text" placeholder="Username" autoFocus />
             </div>
 
-            <div className="mt-5">
+            <div className="mt-4">
               <Input type="password" placeholder="Password" />
             </div>
           </div>
 
-          <Button className="w-full mt-10">Login</Button>
-          <h2 className="text-muted-foreground text-sm mt-4">
+          <Button className="w-full mt-8">Login</Button>
+          <h2 className="text-muted-foreground text-base mt-4">
             Don't have an account ?{" "}
             <Link to="/auth/register" className="text-primary font-medium">
               Register
-            </Link>{" "}
+            </Link>
           </h2>
         </form>
       </div>
