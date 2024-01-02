@@ -12,7 +12,7 @@ const Hero = () => {
           Where developers connect, code, and conquer together"
         </p>
 
-        <Button className="mt-10">
+        <Button className="mt-10" size="lg">
           Go to Feeds
           <MoveRight className="ml-3 h-4 w-4" />
         </Button>
