@@ -1,30 +1,21 @@
-import { register } from "@/api/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRegister } from "@/hooks/useRegister";
 import { RegisterType } from "@/types/user.types";
 import { ChevronLeft } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 
 const Register = () => {
   const [user, setUser] = useState<RegisterType>({} as RegisterType);
+  const registerMutation = useRegister();
 
   const handleUserChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUser((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
-  const mutation = useMutation(register, {
-    onSuccess: (data) => {
-      console.log(`Registeration successfull: ${data}`);
-      console.log(data);
-    },
-    onError: (data) => console.log(`Error: ${data}`),
-  });
-
   const handleRegister = () => {
-    console.log(user);
-    mutation.mutate(user);
+    registerMutation.mutate(user);
   };
 
   return (

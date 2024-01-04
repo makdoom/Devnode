@@ -8,7 +8,6 @@ import router from "./routes/index.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const clientQuery = new QueryClient();
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <QueryClientProvider client={clientQuery}>
