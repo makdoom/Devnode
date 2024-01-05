@@ -1,3 +1,13 @@
+export type User = {
+  _id: string;
+  fullName: string;
+  username: string;
+  email: string;
+  bio: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type RegisterType = {
   fullName: string;
   username: string;
@@ -5,34 +15,24 @@ export type RegisterType = {
   password: string;
 };
 
-export type RegisterResponseType = {
-  _id: string;
-  fullName: string;
-  username: string;
-  email: string;
-  bio: string;
-  createdAt: string;
-  updatedAt: string;
-};
+// export type RegisterResponseType = {
+//   _id: string;
+//   fullName: string;
+//   username: string;
+//   email: string;
+//   bio: string;
+//   createdAt: string;
+//   updatedAt: string;
+// };
 
 export type LoginType = {
   email: string;
   password: string;
 };
 
-type LoggedInUser = {
-  _id: string;
-  fullName: string;
-  username: string;
-  email: string;
-  bio: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type LoginResponseType = {
   data: {
-    loggedInUser: LoggedInUser;
+    loggedInUser: User;
     accessToken: string;
     refreshToken: string;
   };

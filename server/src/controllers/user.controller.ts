@@ -5,10 +5,6 @@ import ApiError from "../utils/ApiError";
 import { generateAccessAndRefreshToken, validateEmail } from "../utils";
 import { User } from "../models/user.model";
 
-const rootRoute = asyncHandler(async (req: Request, res: Response) => {
-  res.status(200).json(new ApiResponse(200, "Hello world", {}));
-});
-
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { fullName, username, email, password } = req.body;
 
@@ -86,4 +82,10 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
     );
 });
 
-export { rootRoute, registerUser, loginUser };
+// const getUser = asyncHandler(async (req: Request, res: Response) => {
+//   res
+//     .status(200)
+//     .json(new ApiResponse(200, "User fetched successfully", req.user));
+// });
+
+export { registerUser, loginUser };
