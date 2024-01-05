@@ -7,11 +7,11 @@ import { LoginType } from "@/types/user.types";
 import Cookies from "js-cookie";
 import { ChevronLeft } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState<LoginType>({} as LoginType);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { mutate, userData, isLoading } = useLogin();
