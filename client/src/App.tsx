@@ -1,16 +1,9 @@
 import { Outlet } from "react-router";
 import Header from "./components/Header";
-import { useEffect } from "react";
-import Axios from "./api/interceptor";
-// import axios from "axios";
+import Cookies from "js-cookie";
 
 const App = () => {
-  useEffect(() => {
-    (async () => {
-      const res = await Axios.get("/users");
-      console.log(res);
-    })();
-  }, []);
+  console.log(Cookies.get("isAuthenticated"));
 
   return (
     <div className="w-full h-full">

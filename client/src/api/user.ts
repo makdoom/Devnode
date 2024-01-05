@@ -1,13 +1,15 @@
 import {
   LoginResponseType,
   LoginType,
-  RegisterResponseType,
   RegisterType,
+  User,
 } from "@/types/user.types";
 import Axios from "./interceptor";
 
 export const register = async (payload: RegisterType) =>
-  Axios.post<RegisterResponseType>("/users/register", payload);
+  Axios.post<User>("/user/register", payload);
 
 export const login = async (payload: LoginType) =>
-  Axios.post<LoginResponseType>("/users/login", payload);
+  Axios.post<LoginResponseType>("/user/login", payload);
+
+export const getUser = async () => Axios.get<User>("/user");

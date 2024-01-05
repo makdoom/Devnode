@@ -1,15 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAppDispatch } from "@/hooks/storeHook";
 import { useLogin } from "@/hooks/useLogin";
+import { setAuthUser } from "@/store/reducers/authReducer";
 import { LoginType } from "@/types/user.types";
 import Cookies from "js-cookie";
 import { ChevronLeft } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState<LoginType>({} as LoginType);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { mutate, userData, isLoading } = useLogin();
 
@@ -21,8 +24,9 @@ const Login = () => {
   };
 
   if (userData.statusCode === 200) {
+    dispatch(setAuthUser(userData.data.loggedInUser));
     Cookies.set("isAuthenticated", "true", { expires: 1 });
-    navigate("/feeds");
+    // navigate("/feeds");
   }
 
   return (
