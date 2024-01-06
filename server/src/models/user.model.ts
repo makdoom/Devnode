@@ -2,20 +2,7 @@ import { NextFunction } from "express";
 import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
-type UserType = {
-  fullName: string;
-  username: string;
-  email: string;
-  avatar?: string;
-  password: string;
-  bio?: string;
-  refreshToken: string;
-
-  isPasswordCorrect: (password: string) => boolean;
-  generateRefreshToken: () => string;
-  generateAccessToken: () => string;
-};
+import { UserType } from "../types/user.types";
 
 type UserSchemaType = UserType & Document;
 

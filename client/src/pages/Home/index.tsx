@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
+import Cookies from "js-cookie";
 import { MoveRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  console.log(Cookies.get("isAuthenticated"));
   return (
     <div className="h-[calc(100vh-55px)] relative">
       <div className="h-full flex justify-center flex-col items-center text-center mx-2">
