@@ -1,9 +1,19 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import Header from "./components/Header";
-import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { useAppSelector } from "./hooks/storeHook";
 
 const App = () => {
-  console.log(Cookies.get("isAuthenticated"));
+  const { isAuthenticated } = useAppSelector((state) => state.authUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/feeds");
+    } else {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="w-full h-full">

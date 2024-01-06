@@ -15,12 +15,11 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<App />}>
         <Route path="" element={<Home />} />
+        <Route path="/feeds" element={<Feeds />} />
       </Route>
 
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />
-
-      <Route path="/feeds" element={<Feeds />} />
     </>
   )
 );
