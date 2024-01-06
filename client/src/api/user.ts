@@ -12,4 +12,6 @@ export const register = async (payload: RegisterType) =>
 export const login = async (payload: LoginType) =>
   Axios.post<LoginResponseType>("/user/login", payload);
 
+export const logoutUser = async () => Axios.get("/user/logout");
+
 export const getUser = async () => Axios.get<User>("/user");

@@ -1,9 +1,9 @@
-import { LogOut, Menu, Pencil } from "lucide-react";
+import { Loader, LogOut, Menu, Pencil } from "lucide-react";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Drawer from "./Drawer";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppSelector } from "@/hooks/storeHook";
+import { useAppDispatch, useAppSelector } from "@/hooks/storeHook";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -13,17 +13,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useLogout } from "@/hooks/useLogout";
+import Cookies from "js-cookie";
+import { authLogout } from "@/store/reducers/authReducer";
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { isAuthenticated } = useAppSelector((state) => state?.authUser);
 
+  const { isLoading, mutate, data } = useLogout();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleDrawerOpen = () => setIsDrawerOpen(true);
   const handleDrawerClose = () => setIsDrawerOpen(false);
 
   const navigatToHome = () => navigate("/");
+
+  const handleLogout = () => {
+    mutate();
+  };
+
+  useEffect(() => {
+    if (data?.data.statusCode) {
+      Cookies.remove("isAuthenticated");
+      navigatToHome();
+      dispatch(authLogout());
+    }
+  }, [data]);
 
   return (
     <div className="w-full py-2 p-4 sm:py-4 flex items-center justify-between border border-secondary sticky top-0 z-10 shadow-sm">
@@ -68,8 +85,16 @@ const Header = () => {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <LogOut className="h-4 w-4 mr-2 text-red-500" />
+              <DropdownMenuItem
+                className="cursor-pointer"
+                disabled={isLoading}
+                onClick={handleLogout}
+              >
+                {isLoading ? (
+                  <Loader className="h-4 w-4 animate-spin" />
+                ) : (
+                  <LogOut className="h-4 w-4 mr-2 text-red-500" />
+                )}
                 <span className="text-red-500">Logout</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
