@@ -4,6 +4,7 @@ import ApiResponse from "../utils/ApiResponse";
 import ApiError from "../utils/ApiError";
 import { generateAccessAndRefreshToken, validateEmail } from "../utils";
 import { User } from "../models/user.model";
+import { CustomRequest } from "../types/custom.types";
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { fullName, username, email, password } = req.body;
@@ -82,10 +83,25 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
     );
 });
 
-// const getUser = asyncHandler(async (req: Request, res: Response) => {
-//   res
-//     .status(200)
-//     .json(new ApiResponse(200, "User fetched successfully", req.user));
-// });
+const logoutUser = asyncHandler(async (req: CustomRequest, res: Response) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: { refreshToken: undefined },
+    },
+    { new: true }
+  );
 
-export { registerUser, loginUser };
+  const cookiesOption: CookieOptions = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  res
+    .status(200)
+    .clearCookie("accessToken", cookiesOption)
+    .clearCookie("refreshToken", cookiesOption)
+    .json(new ApiResponse(200, "User logged out successfully", {}));
+});
+
+export { registerUser, loginUser, logoutUser };
