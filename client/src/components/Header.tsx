@@ -43,10 +43,10 @@ const Header = () => {
   }, [data]);
 
   return (
-    <div className="w-full py-2 p-4 sm:py-4 flex items-center justify-between border border-secondary sticky top-0 z-10 shadow-sm">
+    <div className="w-full py-2 p-4 sm:py-4 flex items-center justify-between border bg-white border-secondary sticky top-0 z-10 shadow-sm">
       <div className="w-full">
         <h1
-          className="font-semibold text-xl md:text-2xl cursor-pointer"
+          className="font-semibold text-xl md:text-2xl cursor-pointer contents"
           onClick={navigatToHome}
         >
           Dev<span className="text-primary">node</span>
