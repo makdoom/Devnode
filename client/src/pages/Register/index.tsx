@@ -1,14 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAppSelector } from "@/hooks/storeHook";
 import { useRegister } from "@/hooks/useRegister";
 import { RegisterType } from "@/types/user.types";
 import { ChevronLeft } from "lucide-react";
-import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const { isAuthenticated } = useAppSelector((state) => state.authUser);
+
   const [user, setUser] = useState<RegisterType>({} as RegisterType);
   const registerMutation = useRegister();
+
+  const navigate = useNavigate();
 
   const handleUserChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUser((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -17,6 +22,12 @@ const Register = () => {
   const handleRegister = () => {
     registerMutation.mutate(user);
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">

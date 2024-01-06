@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAppDispatch } from "@/hooks/storeHook";
+import { useAppDispatch, useAppSelector } from "@/hooks/storeHook";
 import { useLogin } from "@/hooks/useLogin";
 import { setAuthUser } from "@/store/reducers/authReducer";
 import { LoginType } from "@/types/user.types";
 import Cookies from "js-cookie";
 import { ChevronLeft } from "lucide-react";
-import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { isAuthenticated } = useAppSelector((state) => state.authUser);
+
   const [user, setUser] = useState<LoginType>({} as LoginType);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { mutate, userData, isLoading } = useLogin();
@@ -23,11 +25,19 @@ const Login = () => {
     mutate(user);
   };
 
-  if (userData.statusCode === 200) {
-    dispatch(setAuthUser(userData.data.loggedInUser));
-    Cookies.set("isAuthenticated", "true", { expires: 1 });
-    // navigate("/feeds");
-  }
+  useEffect(() => {
+    if (userData.statusCode === 200) {
+      dispatch(setAuthUser(userData.data.loggedInUser));
+      Cookies.set("isAuthenticated", "true", { expires: 1 });
+      navigate("/feeds");
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/feeds");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">

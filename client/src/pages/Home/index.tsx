@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -12,10 +13,12 @@ const Home = () => {
           Where developers connect, code, and conquer together"
         </p>
 
-        <Button className="mt-10" size="lg">
-          Go to Feeds
-          <MoveRight className="ml-3 h-4 w-4" />
-        </Button>
+        <Link to="/feeds">
+          <Button className="mt-10" size="lg">
+            Go to Feeds
+            <MoveRight className="ml-3 h-4 w-4" />
+          </Button>
+        </Link>
       </div>
       <div className="fixed bottom-0 left-0 flex justify-center w-full py-1 text-muted-foreground text-sm">
         <p>
