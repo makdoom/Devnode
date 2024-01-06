@@ -1,10 +1,18 @@
-import { Menu, Pencil } from "lucide-react";
+import { LogOut, Menu, Pencil } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import Drawer from "./Drawer";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/hooks/storeHook";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -36,10 +44,36 @@ const Header = () => {
               Write
             </Button>
           </Link>
-          <Avatar className="cursor-pointer">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar className="cursor-pointer">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>
+                <div className="flex items-center gap-2">
+                  <Avatar className="cursor-pointer h-10 w-10">
+                    <AvatarImage
+                      sizes="2xl"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h3>Makdoom Shaikh</h3>
+                    <p className="text-muted-foreground text-xs">@makdoom</p>
+                  </div>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <LogOut className="h-4 w-4 mr-2 text-red-500" />
+                <span className="text-red-500">Logout</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       ) : (
         <div className="hidden sm:flex sm:gap-3">
