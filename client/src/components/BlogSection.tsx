@@ -21,7 +21,7 @@ const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
   }
 
   return (
-    <div className="my-7">
+    <div className="mt-7">
       <Collapsible
         open={isOpen}
         onOpenChange={setIsOpen}
@@ -37,7 +37,7 @@ const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
             )}
           </div>
         </CollapsibleTrigger>
-        <CollapsibleContent className="space-y-2 mt-2 max-h-[150px] overflow-auto">
+        <CollapsibleContent className="space-y-2 mt-2">
           {blogItemList?.map((singleItem) => (
             <BlogItem
               id={singleItem.id}
