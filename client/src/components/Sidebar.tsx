@@ -1,8 +1,9 @@
 import { MoveLeft, PanelRightOpen, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import BlogSection from "./BlogSection";
 import { Link } from "react-router-dom";
+
+import BlogSection from "./BlogSection";
 
 const list = [
   {

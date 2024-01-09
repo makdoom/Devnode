@@ -1,11 +1,12 @@
 import { useState } from "react";
-import BlogItem from "./BlogItem";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react";
+
+import BlogItem from "./BlogItem";
 
 type BlogSectionPropType = {
   type: "single" | "section";
