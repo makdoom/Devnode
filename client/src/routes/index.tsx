@@ -9,6 +9,7 @@ import Feeds from "@/pages/Feeds";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import CreatePost from "@/pages/CreatePost";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
 
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />
+      <Route path="/create-blog" element={<CreatePost />} />
     </>
   )
 );

@@ -22,9 +22,14 @@ app.use(
 
 // Routes
 import userRouter from "./routes/user.routes";
+import blogRouter from "./routes/blog.routes";
 
 // Routes declaration
+
+// User Routes
 app.use("/api/v1/user", userRouter);
+// Blog Routes
+app.use("/api/v1/blog", blogRouter);
 
 app.use(notFound);
 app.use(errorHandler);

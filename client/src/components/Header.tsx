@@ -43,7 +43,7 @@ const Header = () => {
   }, [data]);
 
   return (
-    <div className="w-full py-2 p-4 sm:py-4 flex items-center justify-between border bg-white border-secondary sticky top-0 z-10 shadow-sm">
+    <div className="w-full py-2 p-4 sm:py-4 flex items-center justify-between border-b bg-[rgba(255,255,255,0.6)] backdrop-blur-[8px] border-secondary sticky top-0 z-10 shadow-sm">
       <div className="w-full">
         <h1
           className="font-semibold text-xl md:text-2xl cursor-pointer contents"
@@ -55,7 +55,7 @@ const Header = () => {
 
       {isAuthenticated ? (
         <div className="flex gap-2">
-          <Link to="/create">
+          <Link to="/create-blog">
             <Button>
               <Pencil className="h-4 w-4 mr-2" />
               Write

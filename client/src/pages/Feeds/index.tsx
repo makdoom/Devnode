@@ -109,7 +109,9 @@ const Feeds = () => {
           ))}
         </div>
       </div>
-      <div className="flex-[0.3]">static</div>
+      <div className="flex-[0.3] relative">
+        <div className="border h-[200px] sticky top-[90px]">static</div>
+      </div>
     </div>
   );
 };
