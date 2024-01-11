@@ -7,7 +7,14 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes/index.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-const clientQuery = new QueryClient();
+const clientQuery = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // Disable automatic refetch on window focus globally
+    },
+  },
+});
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <QueryClientProvider client={clientQuery}>

@@ -7,18 +7,35 @@ import {
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 import BlogItem from "./BlogItem";
+import { useNavigate } from "react-router";
 
 type BlogSectionPropType = {
   type: "single" | "section";
   title: string;
-  blogItemList?: { id: string; title: string }[];
+  blogItemList?: {
+    _id: string;
+    title: string;
+    createdAt?: string;
+    author?: { fullName: string };
+  }[];
 };
 
 const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleBlogItemClick = (id: string | undefined) => {
+    navigate(`/create-blog/${id}`);
+  };
 
   if (type === "single") {
-    return <BlogItem type={type} title={title} />;
+    return (
+      <BlogItem
+        type={type}
+        title={title}
+        onBlogItemClick={() => console.log("create new")}
+      />
+    );
   }
 
   return (
@@ -41,9 +58,13 @@ const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
         <CollapsibleContent className="space-y-2 mt-2">
           {blogItemList?.map((singleItem) => (
             <BlogItem
-              id={singleItem.id}
+              key={singleItem._id}
+              id={singleItem._id}
               type="section"
               title={singleItem.title}
+              onBlogItemClick={(id: string | undefined) =>
+                handleBlogItemClick(id)
+              }
             />
           ))}
         </CollapsibleContent>

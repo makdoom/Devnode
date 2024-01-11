@@ -1,14 +1,17 @@
 import { FilePlus2, FileText } from "lucide-react";
 
 type BlogItemPropType = {
-  id?: string;
+  id?: string | undefined;
   type: "single" | "section";
   title: string;
+
+  onBlogItemClick: (id: string | undefined) => void;
 };
 
-const BlogItem = ({ type, title }: BlogItemPropType) => {
+const BlogItem = ({ id, type, title, onBlogItemClick }: BlogItemPropType) => {
   return (
     <div
+      onClick={() => onBlogItemClick(id)}
       className={`flex group items-center gap-2 hover:bg-purple-100 rounded-md cursor-pointer ${
         type === "single" ? "p-2" : "py-1 px-2"
       }`}

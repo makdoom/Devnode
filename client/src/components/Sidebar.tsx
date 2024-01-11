@@ -4,49 +4,50 @@ import { Input } from "./ui/input";
 import { Link } from "react-router-dom";
 
 import BlogSection from "./BlogSection";
+import { useAppSelector } from "@/hooks/storeHook";
 
-const list = [
-  {
-    id: "12",
-    title: "Blog 1",
-  },
-  {
-    id: "31",
-    title: " Blog 2",
-  },
-  {
-    id: "121",
-    title: "Blog 3",
-  },
-  {
-    id: "311",
-    title: " Blog 4",
-  },
-  {
-    id: "311",
-    title: " Blog 4",
-  },
-  {
-    id: "311",
-    title: " Blog 4",
-  },
-  {
-    id: "311",
-    title: " Blog 4",
-  },
-  {
-    id: "311",
-    title: " Blog 4",
-  },
-  {
-    id: "311",
-    title: " Blog 4",
-  },
-  {
-    id: "311",
-    title: " Blog 4",
-  },
-];
+// const list = [
+//   {
+//     id: "12",
+//     title: "Blog 1",
+//   },
+//   {
+//     id: "31",
+//     title: " Blog 2",
+//   },
+//   {
+//     id: "121",
+//     title: "Blog 3",
+//   },
+//   {
+//     id: "311",
+//     title: " Blog 4",
+//   },
+//   {
+//     id: "311",
+//     title: " Blog 4",
+//   },
+//   {
+//     id: "311",
+//     title: " Blog 4",
+//   },
+//   {
+//     id: "311",
+//     title: " Blog 4",
+//   },
+//   {
+//     id: "311",
+//     title: " Blog 4",
+//   },
+//   {
+//     id: "311",
+//     title: " Blog 4",
+//   },
+//   {
+//     id: "311",
+//     title: " Blog 4",
+//   },
+// ];
 
 type SidebarTypeProps = {
   isSidebarOpen: boolean;
@@ -55,6 +56,8 @@ type SidebarTypeProps = {
 };
 
 const Sidebar = ({ isSidebarOpen, handleToggleSidebar }: SidebarTypeProps) => {
+  const { blogList } = useAppSelector((state) => state.blogs);
+
   return (
     <div
       className={`${
@@ -84,11 +87,11 @@ const Sidebar = ({ isSidebarOpen, handleToggleSidebar }: SidebarTypeProps) => {
       <BlogSection type="single" title="Create New Blog" />
 
       <div className="flex-1 overflow-auto pb-20">
-        <BlogSection type="section" title="Pinned" blogItemList={list} />
+        {/* <BlogSection type="section" title="Pinned" blogItemList={list} /> */}
 
-        <BlogSection type="section" title="My Drafts" blogItemList={list} />
+        {/* <BlogSection type="section" title="My Drafts" blogItemList={list} /> */}
 
-        <BlogSection type="section" title="Published" blogItemList={list} />
+        <BlogSection type="section" title="Published" blogItemList={blogList} />
       </div>
 
       <div className="absolute bottom-4 left-0 w-full flex justify-center">
