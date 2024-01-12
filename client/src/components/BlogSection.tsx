@@ -8,21 +8,38 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 import BlogItem from "./BlogItem";
 import { useNavigate } from "react-router";
+import { useCreateBlog } from "@/hooks/useCreateBlog";
+import { useAppSelector } from "@/hooks/storeHook";
 
 type BlogSectionPropType = {
   type: "single" | "section";
   title: string;
-  blogItemList?: {
-    _id: string;
-    title: string;
-    createdAt?: string;
-    author?: { fullName: string };
-  }[];
+  // blogItemList?: {
+  //   _id: string;
+  //   title: string;
+  //   createdAt?: string;
+  //   author?: { fullName: string };
+  // }[];
 };
 
-const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
+const BlogSection = ({ type, title }: BlogSectionPropType) => {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
+  const { blogList } = useAppSelector((state) => state.blogs);
+
+  const createBlogMutation = useCreateBlog();
+
+  const handleCreateNewBlog = () => {
+    console.log("blogItemList", blogList);
+    const blogName = blogList?.length
+      ? `Untitled-${blogList?.length}`
+      : "Untitled";
+    console.log(blogName);
+    createBlogMutation.mutate({
+      title: blogName,
+      contents: "Another blog contents",
+    });
+  };
 
   const handleBlogItemClick = (id: string | undefined) => {
     navigate(`/create-blog/${id}`);
@@ -33,7 +50,7 @@ const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
       <BlogItem
         type={type}
         title={title}
-        onBlogItemClick={() => console.log("create new")}
+        onBlogItemClick={handleCreateNewBlog}
       />
     );
   }
@@ -56,7 +73,7 @@ const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent className="space-y-2 mt-2">
-          {blogItemList?.map((singleItem) => (
+          {blogList?.map((singleItem) => (
             <BlogItem
               key={singleItem._id}
               id={singleItem._id}

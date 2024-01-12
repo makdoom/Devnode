@@ -4,7 +4,6 @@ import { Input } from "./ui/input";
 import { Link } from "react-router-dom";
 
 import BlogSection from "./BlogSection";
-import { useAppSelector } from "@/hooks/storeHook";
 
 // const list = [
 //   {
@@ -56,8 +55,6 @@ type SidebarTypeProps = {
 };
 
 const Sidebar = ({ isSidebarOpen, handleToggleSidebar }: SidebarTypeProps) => {
-  const { blogList } = useAppSelector((state) => state.blogs);
-
   return (
     <div
       className={`${
@@ -91,7 +88,7 @@ const Sidebar = ({ isSidebarOpen, handleToggleSidebar }: SidebarTypeProps) => {
 
         {/* <BlogSection type="section" title="My Drafts" blogItemList={list} /> */}
 
-        <BlogSection type="section" title="Published" blogItemList={blogList} />
+        <BlogSection type="section" title="Published" />
       </div>
 
       <div className="absolute bottom-4 left-0 w-full flex justify-center">

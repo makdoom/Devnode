@@ -6,6 +6,7 @@ import { store } from "./store/store.ts";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/index.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Toaster } from "sonner";
 
 const clientQuery = new QueryClient({
   defaultOptions: {
@@ -16,9 +17,10 @@ const clientQuery = new QueryClient({
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <QueryClientProvider client={clientQuery}>
+  <QueryClientProvider client={clientQuery}>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </QueryClientProvider>
-  </Provider>
+      <Toaster position="top-center" richColors />
+    </Provider>
+  </QueryClientProvider>
 );
