@@ -21,7 +21,7 @@ type BlogSectionPropType = {
 };
 
 const BlogSection = ({ type, title, blogItemList }: BlogSectionPropType) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
   const handleBlogItemClick = (id: string | undefined) => {
