@@ -56,37 +56,35 @@ const BlogSection = ({ type, title }: BlogSectionPropType) => {
   }
 
   return (
-    <div className="mt-7">
-      <Collapsible
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        className="w-full my-4"
-      >
-        <CollapsibleTrigger asChild>
-          <div className="flex items-center justify-between w-full cursor-pointer">
-            <h4 className="text-sm font-semibold text-primary">{title}</h4>
-            {isOpen ? (
-              <ChevronUp className="h-5 w-5 text-primary" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-primary" />
-            )}
-          </div>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="space-y-2 mt-2">
-          {blogList?.map((singleItem) => (
-            <BlogItem
-              key={singleItem._id}
-              id={singleItem._id}
-              type="section"
-              title={singleItem.title}
-              onBlogItemClick={(id: string | undefined) =>
-                handleBlogItemClick(id)
-              }
-            />
-          ))}
-        </CollapsibleContent>
-      </Collapsible>
-    </div>
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="w-full my-4 flex-1"
+    >
+      <CollapsibleTrigger asChild>
+        <div className="flex items-center justify-between w-full cursor-pointer">
+          <h4 className="text-sm font-semibold text-primary">{title}</h4>
+          {isOpen ? (
+            <ChevronUp className="h-5 w-5 text-primary" />
+          ) : (
+            <ChevronDown className="h-5 w-5 text-primary" />
+          )}
+        </div>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="space-y-1 mt-2 overflow-auto h-[550px]">
+        {blogList?.map((singleItem) => (
+          <BlogItem
+            key={singleItem._id}
+            id={singleItem._id}
+            type="section"
+            title={singleItem.title}
+            onBlogItemClick={(id: string | undefined) =>
+              handleBlogItemClick(id)
+            }
+          />
+        ))}
+      </CollapsibleContent>
+    </Collapsible>
   );
 };
 export default BlogSection;

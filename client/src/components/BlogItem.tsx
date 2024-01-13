@@ -1,5 +1,11 @@
-import { FilePlus2, FileText } from "lucide-react";
+import { FilePlus2, FileText, MoreVertical, Pin, Trash } from "lucide-react";
 import { useParams } from "react-router";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 type BlogItemPropType = {
   id?: string | undefined;
@@ -16,7 +22,7 @@ const BlogItem = ({ id, type, title, onBlogItemClick }: BlogItemPropType) => {
     <div
       onClick={() => onBlogItemClick(id)}
       className={`flex group items-center gap-2 hover:bg-purple-100 rounded-md cursor-pointer ${
-        type === "single" ? "p-2" : "py-1 px-2"
+        type === "single" ? "p-2" : "p-2"
       }
       ${id === params.id && "bg-purple-100 text-primary"}
       `}
@@ -30,7 +36,23 @@ const BlogItem = ({ id, type, title, onBlogItemClick }: BlogItemPropType) => {
           }`}
         />
       )}
-      <span className="text-sm group-hover:text-primary">{title}</span>
+      <span className="flex-1 text-sm group-hover:text-primary">{title}</span>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger className="outline-none">
+          <MoreVertical className="h-4 w-4 text-primary" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-30" align="start" forceMount>
+          <DropdownMenuItem className="cursor-pointer">
+            <Pin className="h-4 w-4 mr-2" />
+            Pin
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            <Trash className="h-4 w-4 mr-2 text-red-500" />
+            <span className="text-red-500">Delete</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

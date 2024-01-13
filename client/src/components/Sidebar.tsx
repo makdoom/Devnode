@@ -59,14 +59,14 @@ const Sidebar = ({ isSidebarOpen, handleToggleSidebar }: SidebarTypeProps) => {
     <div
       className={`${
         isSidebarOpen ? "w-[250px]" : "w-0 hidden p-0"
-      } border-r p-4 transition-all duration-300 ease-in relative flex flex-col`}
+      } border-r p-3 transition-all duration-300 ease-in relative flex flex-col`}
     >
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold">Makdoom Shaikh's Blog</h3>
         <Button
           variant="secondary"
           size="icon"
-          className="group rounded-full bg-purple-100 hover:bg-purple-100 transition-all duration-200"
+          className="group rounded-full bg-transparent hover:bg-purple-100 transition-all duration-200"
           onClick={() => handleToggleSidebar()}
         >
           <PanelRightOpen className="h-5 w-5 text-primary cursor-pointer font-light" />
@@ -83,13 +83,13 @@ const Sidebar = ({ isSidebarOpen, handleToggleSidebar }: SidebarTypeProps) => {
 
       <BlogSection type="single" title="Create New Blog" />
 
-      <div className="flex-1 overflow-auto pb-20">
-        {/* <BlogSection type="section" title="Pinned" blogItemList={list} /> */}
+      {/* <div className="flex-1"> */}
+      {/* <BlogSection type="section" title="Pinned" blogItemList={list} /> */}
 
-        {/* <BlogSection type="section" title="My Drafts" blogItemList={list} /> */}
+      {/* <BlogSection type="section" title="My Drafts" blogItemList={list} /> */}
 
-        <BlogSection type="section" title="Published" />
-      </div>
+      <BlogSection type="section" title="Published" />
+      {/* </div> */}
 
       <div className="absolute bottom-4 left-0 w-full flex justify-center">
         <Button variant="secondary" className="w-full mx-4">

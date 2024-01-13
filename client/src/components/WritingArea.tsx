@@ -28,20 +28,30 @@ const WritingArea = ({
   }, [params, blogList]);
 
   return (
-    <div className="flex-1 p-4">
-      <div>
+    <div className="flex-1 p-4 h-screen overflow-auto">
+      <div
+        className={`flex items-center ${
+          !isSidebarOpen ? "justify-between" : "justify-end"
+        }`}
+      >
         {!isSidebarOpen && (
           <Button
             variant="secondary"
             size="icon"
-            className="rounded-full bg-transparent hover:bg-secondary transition-all duration-200"
+            className="group rounded-full bg-transparent hover:bg-purple-100 transition-all duration-200"
             onClick={() => handleToggleSidebar()}
           >
-            <PanelRightClose className="h-5 w-5 text-muted-foreground cursor-pointer font-light" />
+            <PanelRightClose className="h-5 w-5 text-primary cursor-pointer font-light" />
           </Button>
         )}
 
-        <h1>{currentBlog?.title}</h1>
+        <div className="flex gap-2">
+          <Button size="sm" variant="secondary">
+            Save as Draft
+          </Button>
+          <Button size="sm">Publish</Button>
+        </div>
+        {/* <h1>{currentBlog?.title}</h1> */}
       </div>
     </div>
   );
