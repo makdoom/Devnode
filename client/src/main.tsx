@@ -1,12 +1,12 @@
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
-import "./index.css";
 import { store } from "./store/store.ts";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/index.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Toaster } from "sonner";
+import "./index.css";
 
 const clientQuery = new QueryClient({
   defaultOptions: {

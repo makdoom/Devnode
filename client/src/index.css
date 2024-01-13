@@ -63,3 +63,14 @@
     @apply bg-background text-foreground font-inter font-normal;
   }
 }
+
+.bn-block-content{
+  font-weight: 500;
+  font-size: large;
+}
+.bn-block-content.bn-is-empty.bn-has-anchor .bn-inline-content:before{
+  color: var(--muted-foreground);
+  font-family: 'Inter';
+  font-style: normal;
+  font-size: large;
+}
