@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks/storeHook";
 import { Blog } from "@/types/blog.types";
+import Editor from "./Editor";
 
 type WritingAreaPropType = {
   isSidebarOpen: boolean;
@@ -52,6 +53,10 @@ const WritingArea = ({
           <Button size="sm">Publish</Button>
         </div>
         {/* <h1>{currentBlog?.title}</h1> */}
+      </div>
+
+      <div className="mt-12">
+        <Editor />
       </div>
     </div>
   );

@@ -5,49 +5,6 @@ import { Link } from "react-router-dom";
 
 import BlogSection from "./BlogSection";
 
-// const list = [
-//   {
-//     id: "12",
-//     title: "Blog 1",
-//   },
-//   {
-//     id: "31",
-//     title: " Blog 2",
-//   },
-//   {
-//     id: "121",
-//     title: "Blog 3",
-//   },
-//   {
-//     id: "311",
-//     title: " Blog 4",
-//   },
-//   {
-//     id: "311",
-//     title: " Blog 4",
-//   },
-//   {
-//     id: "311",
-//     title: " Blog 4",
-//   },
-//   {
-//     id: "311",
-//     title: " Blog 4",
-//   },
-//   {
-//     id: "311",
-//     title: " Blog 4",
-//   },
-//   {
-//     id: "311",
-//     title: " Blog 4",
-//   },
-//   {
-//     id: "311",
-//     title: " Blog 4",
-//   },
-// ];
-
 type SidebarTypeProps = {
   isSidebarOpen: boolean;
 
