@@ -22,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />
       <Route path="/create-blog" element={<CreatePost />} />
+      <Route path="/create-blog/:id" element={<CreatePost />} />
     </>
   )
 );

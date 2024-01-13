@@ -38,6 +38,11 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
       $unwind: "$author",
     },
     {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+    {
       $project: {
         title: 1,
         createdAt: 1,
