@@ -21,6 +21,7 @@ const WritingArea = ({
 
   const [currentBlog, setCurrentBlog] = useState<Blog | null>();
 
+  console.log(currentBlog);
   useEffect(() => {
     if (params?.id) {
       let blog = blogList.find((item) => item._id === params?.id);
