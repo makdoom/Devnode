@@ -45,7 +45,7 @@ const Sidebar = ({ isSidebarOpen, handleToggleSidebar }: SidebarTypeProps) => {
 
       {/* <BlogSection type="section" title="My Drafts" blogItemList={list} /> */}
 
-      <BlogSection type="section" title="Published" />
+      <BlogSection type="section" title="My Drafts" />
       {/* </div> */}
 
       <div className="absolute bottom-4 left-0 w-full flex justify-center">

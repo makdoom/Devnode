@@ -36,7 +36,9 @@ const BlogItem = ({ id, type, title, onBlogItemClick }: BlogItemPropType) => {
           }`}
         />
       )}
-      <span className="flex-1 text-sm group-hover:text-primary">{title}</span>
+      <span className="flex-1 text-sm group-hover:text-primary">
+        {title.length > 15 ? `${title.slice(0, 15)}...` : title}
+      </span>
 
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none">

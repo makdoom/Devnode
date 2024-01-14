@@ -2,9 +2,11 @@ import { PanelRightClose } from "lucide-react";
 import { Button } from "./ui/button";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "@/hooks/storeHook";
+import { useAppDispatch, useAppSelector } from "@/hooks/storeHook";
 import { Blog } from "@/types/blog.types";
 import Editor from "./Editor";
+import useDebounce from "@/hooks/useDebounce";
+import { updateBlogTitle } from "@/store/reducers/blogReducer";
 
 type WritingAreaPropType = {
   isSidebarOpen: boolean;
@@ -17,15 +19,33 @@ const WritingArea = ({
   handleToggleSidebar,
 }: WritingAreaPropType) => {
   const { blogList } = useAppSelector((state) => state.blogs);
+  const dispatch = useAppDispatch();
   const params = useParams();
 
-  const [currentBlog, setCurrentBlog] = useState<Blog | null>();
+  const [currentBlog, setCurrentBlog] = useState<Blog>({} as Blog);
+  const debounceUpdatedBlog = useDebounce(currentBlog, 500);
 
-  console.log(currentBlog);
+  const handleUpdateCurrentBlog = (name: string, value: string) => {
+    setCurrentBlog((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const publishBogHandler = () => {
+    console.log(currentBlog);
+  };
+
+  useEffect(() => {
+    // Will update title in every 300ms so that it will reflect in sidebar component as well
+    if (JSON.stringify(debounceUpdatedBlog).length) {
+      dispatch(updateBlogTitle(debounceUpdatedBlog));
+    }
+  }, [JSON.stringify(debounceUpdatedBlog).length]);
+
   useEffect(() => {
     if (params?.id) {
       let blog = blogList.find((item) => item._id === params?.id);
-      setCurrentBlog(blog ? blog : null);
+      if (blog) {
+        setCurrentBlog(blog);
+      }
     }
   }, [params, blogList]);
 
@@ -51,13 +71,18 @@ const WritingArea = ({
           <Button size="sm" variant="secondary">
             Save as Draft
           </Button>
-          <Button size="sm">Publish</Button>
+          <Button size="sm" onClick={publishBogHandler}>
+            Publish
+          </Button>
         </div>
         {/* <h1>{currentBlog?.title}</h1> */}
       </div>
 
       <div className="mt-12">
-        <Editor />
+        <Editor
+          currentBlog={currentBlog}
+          handleUpdateCurrentBlog={handleUpdateCurrentBlog}
+        />
       </div>
     </div>
   );

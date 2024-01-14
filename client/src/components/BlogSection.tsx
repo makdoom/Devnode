@@ -14,12 +14,6 @@ import { useAppSelector } from "@/hooks/storeHook";
 type BlogSectionPropType = {
   type: "single" | "section";
   title: string;
-  // blogItemList?: {
-  //   _id: string;
-  //   title: string;
-  //   createdAt?: string;
-  //   author?: { fullName: string };
-  // }[];
 };
 
 const BlogSection = ({ type, title }: BlogSectionPropType) => {
@@ -30,14 +24,13 @@ const BlogSection = ({ type, title }: BlogSectionPropType) => {
   const createBlogMutation = useCreateBlog();
 
   const handleCreateNewBlog = () => {
-    console.log("blogItemList", blogList);
     const blogName = blogList?.length
       ? `Untitled-${blogList?.length}`
       : "Untitled";
-    console.log(blogName);
+
     createBlogMutation.mutate({
       title: blogName,
-      contents: "Another blog contents",
+      contents: "",
     });
   };
 
@@ -63,7 +56,9 @@ const BlogSection = ({ type, title }: BlogSectionPropType) => {
     >
       <CollapsibleTrigger asChild>
         <div className="flex items-center justify-between w-full cursor-pointer">
-          <h4 className="text-sm font-semibold text-primary">{title}</h4>
+          <h4 className="text-sm font-semibold text-primary">
+            {title} {blogList.length ? `(${blogList.length})` : ""}
+          </h4>
           {isOpen ? (
             <ChevronUp className="h-5 w-5 text-primary" />
           ) : (
