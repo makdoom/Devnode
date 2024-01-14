@@ -6,13 +6,22 @@ import { CustomRequest } from "../types/custom.types";
 import mongoose from "mongoose";
 
 const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
-  const { title, contents } = req.body;
+  const {
+    title,
+    contents,
+    subtitle,
+    isDraft = true,
+    isPublished = false,
+  } = req.body;
 
   // Create new blog post
   const createdBlogPost = await Blog.create({
     title,
     contents,
-    authorId: req.user._id,
+    subtitle,
+    isDraft,
+    isPublished,
+    author: req.user._id,
   });
   res
     .status(201)
@@ -23,13 +32,13 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
   const blogList = await Blog.aggregate([
     {
       $match: {
-        authorId: new mongoose.Types.ObjectId(req.user._id),
+        author: new mongoose.Types.ObjectId(req.user._id),
       },
     },
     {
       $lookup: {
         from: "users", // the name of the users collection
-        localField: "authorId",
+        localField: "author",
         foreignField: "_id",
         as: "author",
       },
@@ -45,18 +54,24 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
     {
       $project: {
         title: 1,
-        createdAt: 1,
+        subtitle: 1,
         contents: 1,
+        tags: 1,
+        coverImage: 1,
+        createdAt: 1,
+        isPublished: 1,
+        isDraft: 1,
         "author.fullName": 1,
-        "author.email": 1,
+        "author.username": 1,
       },
     },
   ]);
 
   console.log(blogList);
+
   res
     .status(201)
-    .json(new ApiResponse(200, "Blog created successfully", blogList));
+    .json(new ApiResponse(200, "Blog fetched successfully", blogList));
 });
 
 export { createBlog, getBlogs };

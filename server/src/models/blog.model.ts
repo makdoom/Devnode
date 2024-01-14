@@ -7,13 +7,27 @@ const blogSchema = new Schema(
       type: String,
       trim: true,
     },
+    subtitle: {
+      type: String,
+      trim: true,
+    },
     contents: {
       type: String,
       trim: true,
     },
-    authorId: {
+    coverImage: {
+      type: String,
+    },
+    tags: { type: [String] },
+    author: {
       type: mongoose.Types.ObjectId,
       ref: "User",
+    },
+    isDraft: {
+      type: Boolean,
+    },
+    isPublished: {
+      type: Boolean,
     },
   },
   { timestamps: true }
