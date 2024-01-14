@@ -67,8 +67,6 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
     },
   ]);
 
-  console.log(blogList);
-
   res
     .status(201)
     .json(new ApiResponse(200, "Blog fetched successfully", blogList));
@@ -76,7 +74,39 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
 
 const updateBlogCoverImage = asyncHandler(
   async (req: CustomRequest, res: Response) => {
-    console.log("Updated blog cover Image");
+    console.log(req.file);
+    // const coverLocalImagePath = req.file?.path;
+    // if (!coverLocalImagePath)
+    //   throw new ApiError(400, "Cover image file is missing");
+
+    // const user = await User.findById(req.user._id);
+    // const coverImagePublidId = user.coverImage
+    //   ?.split("/")
+    //   ?.at(-1)
+    //   ?.split(".")
+    //   ?.at(0);
+
+    // const coverImage = await uploadOnCloudinary(coverLocalImagePath);
+    // if (!coverImage) throw new ApiError(400, "Error while uploading cover image");
+
+    // const updatedUser = await User.findByIdAndUpdate(
+    //   req.user._id,
+    //   {
+    //     $set: {
+    //       coverImage: coverImage?.url,
+    //     },
+    //   },
+    //   { new: true }
+    // ).select("-password");
+
+    // await deleteOnCloudinary(coverImagePublidId);
+
+    return res.json({ success: 1, data: null });
+    // return res
+    //   .status(200)
+    //   .json(
+    //     new ApiResponse(200, updatedUser, "User cover image updated successfully")
+    //   );
   }
 );
 

@@ -12,6 +12,16 @@ export const createBlog = async (payload: BlogPayload) => {
   return response.data;
 };
 
+export const updateBlogImage = async (blogImage: File) => {
+  const formData = new FormData();
+
+  formData.append("coverImage", blogImage);
+  console.log("Image reached here", blogImage);
+
+  const response = await Axios.post("/blog/update-blog-cover-image", formData);
+  return response.data;
+};
+
 export const updateBlogCoverImage = async (payload: BlogPayload) => {
   const formData = new FormData();
 
@@ -20,5 +30,5 @@ export const updateBlogCoverImage = async (payload: BlogPayload) => {
     formData.append("coverImage", payload.coverImage);
   }
 
-  const response = await Axios.post("/blog/update-blog-cover-image", formData);
+  // const response = await Axios.post("/blog/update-blog-cover-image", formData);
 };

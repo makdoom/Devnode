@@ -11,6 +11,7 @@ import {
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/react/style.css";
 import { Blog } from "@/types/blog.types";
+import useUpdateImage from "@/hooks/useUpdateImage";
 
 type EditorBlogPropType = {
   currentBlog: Blog;
@@ -21,8 +22,9 @@ const Editor = ({
   currentBlog,
   handleUpdateCurrentBlog,
 }: EditorBlogPropType) => {
+  const updateImageMutation = useUpdateImage();
+
   const [isSubtitleVisible, setIsSubtitleVisible] = useState(false);
-  // const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
 
   const titleRef = useRef<HTMLTextAreaElement>(null);
@@ -67,6 +69,8 @@ const Editor = ({
   const coverImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
       const coverImageURL = URL.createObjectURL(event.target.files?.[0]);
+
+      updateImageMutation.mutate(event.target.files?.[0]);
       handleUpdateCurrentBlog("coverImage", coverImageURL);
     }
   };
