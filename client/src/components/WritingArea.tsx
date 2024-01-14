@@ -7,6 +7,7 @@ import { Blog } from "@/types/blog.types";
 import Editor from "./Editor";
 import useDebounce from "@/hooks/useDebounce";
 import { updateBlogTitle } from "@/store/reducers/blogReducer";
+import { useUpdatedBlog } from "@/hooks/useUpdateBlog";
 
 type WritingAreaPropType = {
   isSidebarOpen: boolean;
@@ -22,15 +23,18 @@ const WritingArea = ({
   const dispatch = useAppDispatch();
   const params = useParams();
 
+  const updateBlogMutation = useUpdatedBlog();
+
   const [currentBlog, setCurrentBlog] = useState<Blog>({} as Blog);
   const debounceUpdatedBlog = useDebounce(currentBlog, 500);
 
-  const handleUpdateCurrentBlog = (name: string, value: string) => {
+  const handleUpdateCurrentBlog = (name: string, value: string | File) => {
     setCurrentBlog((prev) => ({ ...prev, [name]: value }));
   };
 
-  const publishBogHandler = () => {
+  const publishBlogHandler = () => {
     console.log(currentBlog);
+    updateBlogMutation.mutate(currentBlog);
   };
 
   useEffect(() => {
@@ -71,7 +75,7 @@ const WritingArea = ({
           <Button size="sm" variant="secondary">
             Save as Draft
           </Button>
-          <Button size="sm" onClick={publishBogHandler}>
+          <Button size="sm" onClick={publishBlogHandler}>
             Publish
           </Button>
         </div>

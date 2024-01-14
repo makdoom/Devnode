@@ -11,3 +11,14 @@ export const createBlog = async (payload: BlogPayload) => {
   console.log(response);
   return response.data;
 };
+
+export const updateBlogCoverImage = async (payload: BlogPayload) => {
+  const formData = new FormData();
+
+  console.log("payload", payload);
+  if (payload.coverImage) {
+    formData.append("coverImage", payload.coverImage);
+  }
+
+  const response = await Axios.post("/blog/update-blog-cover-image", formData);
+};

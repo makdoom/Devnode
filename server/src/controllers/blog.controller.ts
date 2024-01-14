@@ -8,8 +8,8 @@ import mongoose from "mongoose";
 const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
   const {
     title,
-    contents,
-    subtitle,
+    contents = [],
+    subtitle = "",
     isDraft = true,
     isPublished = false,
   } = req.body;
@@ -74,4 +74,10 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
     .json(new ApiResponse(200, "Blog fetched successfully", blogList));
 });
 
-export { createBlog, getBlogs };
+const updateBlogCoverImage = asyncHandler(
+  async (req: CustomRequest, res: Response) => {
+    console.log("Updated blog cover Image");
+  }
+);
+
+export { createBlog, getBlogs, updateBlogCoverImage };

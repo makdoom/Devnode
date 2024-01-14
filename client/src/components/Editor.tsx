@@ -14,7 +14,7 @@ import { Blog } from "@/types/blog.types";
 
 type EditorBlogPropType = {
   currentBlog: Blog;
-  handleUpdateCurrentBlog: (name: string, value: string) => void;
+  handleUpdateCurrentBlog: (name: string, value: string | File) => void;
 };
 
 const Editor = ({
@@ -27,6 +27,7 @@ const Editor = ({
 
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const subtitleRef = useRef<HTMLTextAreaElement>(null);
+  const coverImageFileRef = useRef<HTMLInputElement>(null);
 
   // Creates a new editor instance.
   const editor: BlockNoteEditor = useBlockNote(
@@ -61,18 +62,58 @@ const Editor = ({
   const subTitleChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setSubtitle(event.target.value);
 
+  const addConverImageHandler = () => coverImageFileRef.current?.click();
+
+  const coverImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.length) {
+      const coverImageURL = URL.createObjectURL(event.target.files?.[0]);
+      handleUpdateCurrentBlog("coverImage", coverImageURL);
+    }
+  };
+
+  const removeCoverImageHandler = () => {
+    handleUpdateCurrentBlog("coverImage", "");
+  };
+
   return (
     <div className="h-full max-w-screen-lg m-auto">
-      <div className="flex gap-2">
-        <Button
-          variant="secondary"
-          size="sm"
-          className="bg-transparent hover:bg-secondary transition-all font-medium"
-          // onClick={handleClick}
-        >
-          <Image className="h-4 w-4 mr-2" />
-          Add Cover
-        </Button>
+      {currentBlog.coverImage && (
+        <div className="w-full relative h-[500px]">
+          <img
+            src={currentBlog.coverImage}
+            alt={`${currentBlog.title}-cover`}
+            className="w-full h-full object-cover"
+          />
+
+          <Button
+            size="icon"
+            variant="secondary"
+            className=" absolute top-6 right-6 rounded-full hover:bg-secondary"
+            onClick={removeCoverImageHandler}
+          >
+            <X className="h-5 w-5 text-muted-foreground cursor-pointer" />
+          </Button>
+        </div>
+      )}
+      <div className="flex gap-2 mt-4">
+        <input
+          type="file"
+          accept="image/*"
+          ref={coverImageFileRef}
+          onChange={coverImageChangeHandler}
+          className="hidden"
+        />
+        {!currentBlog.coverImage && (
+          <Button
+            variant="secondary"
+            size="sm"
+            className="bg-transparent hover:bg-secondary transition-all font-medium"
+            onClick={addConverImageHandler}
+          >
+            <Image className="h-4 w-4 mr-2" />
+            Add Cover
+          </Button>
+        )}
 
         {!isSubtitleVisible && (
           <Button
