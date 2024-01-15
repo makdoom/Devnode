@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 // Create a custom axios instance
 const Axios: AxiosInstance = axios.create({
   baseURL: "/api/v1", // Set your API base URL
-  timeout: 5000, // Set the timeout for requests
+  timeout: 7000, // Set the timeout for requests
 });
 
 // Add request interceptor

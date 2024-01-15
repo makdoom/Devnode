@@ -1,7 +1,7 @@
-import { GanttChart, Image, X } from "lucide-react";
+import { GanttChart, Image, Loader2, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import useAutoSizeTextArea from "@/hooks/useAutoSizeTextarea";
 
 import {
@@ -22,7 +22,7 @@ const Editor = ({
   currentBlog,
   handleUpdateCurrentBlog,
 }: EditorBlogPropType) => {
-  const updateImageMutation = useUpdateImage();
+  const { mutate, isLoading, data } = useUpdateImage();
 
   const [isSubtitleVisible, setIsSubtitleVisible] = useState(false);
   const [subtitle, setSubtitle] = useState("");
@@ -66,21 +66,26 @@ const Editor = ({
 
   const addConverImageHandler = () => coverImageFileRef.current?.click();
 
-  const coverImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const coverImageChangeHandler = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files?.length) {
-      const coverImageURL = URL.createObjectURL(event.target.files?.[0]);
-
-      updateImageMutation.mutate({
+      mutate({
         file: event.target.files?.[0],
         id: currentBlog._id,
       });
-      handleUpdateCurrentBlog("coverImage", coverImageURL);
     }
   };
 
   const removeCoverImageHandler = () => {
     handleUpdateCurrentBlog("coverImage", "");
   };
+
+  useEffect(() => {
+    if (data !== null) {
+      handleUpdateCurrentBlog("coverImage", data);
+    }
+  }, [data]);
 
   return (
     <div className="h-full max-w-screen-lg m-auto">
@@ -116,8 +121,13 @@ const Editor = ({
             size="sm"
             className="bg-transparent hover:bg-secondary transition-all font-medium"
             onClick={addConverImageHandler}
+            disabled={isLoading}
           >
-            <Image className="h-4 w-4 mr-2" />
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Image className="h-4 w-4 mr-2" />
+            )}
             Add Cover
           </Button>
         )}
@@ -128,6 +138,7 @@ const Editor = ({
             size="sm"
             className="bg-transparent hover:bg-secondary transition-all font-medium"
             onClick={subtitleVisibilityHandler}
+            disabled={isLoading}
           >
             <GanttChart className="h-4 w-4 mr-2" />
             Add Subtitle

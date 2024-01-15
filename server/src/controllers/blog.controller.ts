@@ -79,9 +79,8 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
 
 const updateBlogCoverImage = asyncHandler(
   async (req: CustomRequest, res: Response) => {
-    // console.log(req.file);
     const { blogId } = req.body;
-    console.log(blogId);
+
     const coverLocalImagePath = req.file?.path;
     if (!coverLocalImagePath)
       throw new ApiError(400, "Cover Image file is missing");
@@ -96,7 +95,6 @@ const updateBlogCoverImage = asyncHandler(
     if (!coverImage)
       throw new ApiError(400, "Error while uploading cover image");
 
-    console.log("uploaded coverimage", coverImage);
     const updatedBlog = await Blog.findByIdAndUpdate(
       blogId,
       {
@@ -109,7 +107,6 @@ const updateBlogCoverImage = asyncHandler(
 
     if (coverImagePublidId) await deleteOnCloudinary(coverImagePublidId);
 
-    // return res.json({ success: 1, data: null });
     return res
       .status(200)
       .json(
