@@ -12,7 +12,7 @@ const router = Router();
 router.route("/create-blog").post(verifyJWT, createBlog);
 router.route("/get-blogs").get(verifyJWT, getBlogs);
 router
-  .route("/update-blog-cover-image")
+  .route("/update-image")
   .post(verifyJWT, uploadFile.single("coverImage"), updateBlogCoverImage);
 
 export default router;

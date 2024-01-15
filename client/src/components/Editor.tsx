@@ -70,7 +70,10 @@ const Editor = ({
     if (event.target.files?.length) {
       const coverImageURL = URL.createObjectURL(event.target.files?.[0]);
 
-      updateImageMutation.mutate(event.target.files?.[0]);
+      updateImageMutation.mutate({
+        file: event.target.files?.[0],
+        id: currentBlog._id,
+      });
       handleUpdateCurrentBlog("coverImage", coverImageURL);
     }
   };

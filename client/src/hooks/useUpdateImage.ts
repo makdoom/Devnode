@@ -4,7 +4,8 @@ import { useMutation } from "react-query";
 const useUpdateImage = () => {
   return useMutation({
     mutationKey: ["UpdateImage"],
-    mutationFn: (payload: File) => updateBlogImage(payload),
+    mutationFn: (payload: { file: File; id: string }) =>
+      updateBlogImage(payload),
   });
 };
 

@@ -4,6 +4,9 @@ import ApiResponse from "../utils/ApiResponse";
 import { Blog } from "../models/blog.model";
 import { CustomRequest } from "../types/custom.types";
 import mongoose from "mongoose";
+import ApiError from "../utils/ApiError";
+import { User } from "../models/user.model";
+import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary";
 
 const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
   const {
@@ -12,6 +15,7 @@ const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
     subtitle = "",
     isDraft = true,
     isPublished = false,
+    coverImage = "",
   } = req.body;
 
   // Create new blog post
@@ -21,6 +25,7 @@ const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
     subtitle,
     isDraft,
     isPublished,
+    coverImage,
     author: req.user._id,
   });
   res
@@ -74,39 +79,46 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
 
 const updateBlogCoverImage = asyncHandler(
   async (req: CustomRequest, res: Response) => {
-    console.log(req.file);
-    // const coverLocalImagePath = req.file?.path;
-    // if (!coverLocalImagePath)
-    //   throw new ApiError(400, "Cover image file is missing");
+    // console.log(req.file);
+    const { blogId } = req.body;
+    console.log(blogId);
+    const coverLocalImagePath = req.file?.path;
+    if (!coverLocalImagePath)
+      throw new ApiError(400, "Cover Image file is missing");
 
-    // const user = await User.findById(req.user._id);
-    // const coverImagePublidId = user.coverImage
-    //   ?.split("/")
-    //   ?.at(-1)
-    //   ?.split(".")
-    //   ?.at(0);
+    const blog = await Blog.findById(blogId);
 
-    // const coverImage = await uploadOnCloudinary(coverLocalImagePath);
-    // if (!coverImage) throw new ApiError(400, "Error while uploading cover image");
+    const coverImagePublidId = blog.coverImage
+      ? blog.coverImage?.split("/")?.at(-1)?.split(".")?.at(0)
+      : "";
 
-    // const updatedUser = await User.findByIdAndUpdate(
-    //   req.user._id,
-    //   {
-    //     $set: {
-    //       coverImage: coverImage?.url,
-    //     },
-    //   },
-    //   { new: true }
-    // ).select("-password");
+    const coverImage = await uploadOnCloudinary(coverLocalImagePath);
+    if (!coverImage)
+      throw new ApiError(400, "Error while uploading cover image");
 
-    // await deleteOnCloudinary(coverImagePublidId);
+    console.log("uploaded coverimage", coverImage);
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $set: {
+          coverImage: coverImage?.url,
+        },
+      },
+      { new: true }
+    );
 
-    return res.json({ success: 1, data: null });
-    // return res
-    //   .status(200)
-    //   .json(
-    //     new ApiResponse(200, updatedUser, "User cover image updated successfully")
-    //   );
+    if (coverImagePublidId) await deleteOnCloudinary(coverImagePublidId);
+
+    // return res.json({ success: 1, data: null });
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          "Blog cover image updated successfully",
+          updatedBlog
+        )
+      );
   }
 );
 
