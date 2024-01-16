@@ -13,6 +13,7 @@ import "@blocknote/react/style.css";
 import { Blog } from "@/types/blog.types";
 import useUpdateImage from "@/hooks/useUpdateImage";
 import { toast } from "sonner";
+import useDeleteImage from "@/hooks/useDeleteImage";
 
 type EditorBlogPropType = {
   currentBlog: Blog;
@@ -24,6 +25,9 @@ const Editor = ({
   handleUpdateCurrentBlog,
 }: EditorBlogPropType) => {
   const { mutate, isLoading, data } = useUpdateImage();
+  const deleteImageMutation = useDeleteImage(() =>
+    console.log("data from hook callback")
+  );
 
   const [isSubtitleVisible, setIsSubtitleVisible] = useState(false);
 
@@ -82,7 +86,19 @@ const Editor = ({
   };
 
   const removeCoverImageHandler = () => {
-    handleUpdateCurrentBlog("coverImage", "");
+    if (currentBlog.coverImage) {
+      let publicId = currentBlog.coverImage
+        ?.split("/")
+        ?.at(-1)
+        ?.split(".")
+        ?.at(0);
+
+      deleteImageMutation.mutate({
+        blogId: currentBlog._id,
+        coverImagePublicId: publicId!,
+      });
+      handleUpdateCurrentBlog("coverImage", "");
+    }
   };
 
   useEffect(() => {

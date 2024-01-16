@@ -86,7 +86,7 @@ const updateBlogCoverImage = asyncHandler(
 
     const blog = await Blog.findById(blogId);
 
-    const coverImagePublidId = blog.coverImage
+    const coverImagePublicId = blog.coverImage
       ? blog.coverImage?.split("/")?.at(-1)?.split(".")?.at(0)
       : "";
 
@@ -104,7 +104,7 @@ const updateBlogCoverImage = asyncHandler(
       { new: true }
     );
 
-    if (coverImagePublidId) await deleteOnCloudinary(coverImagePublidId);
+    if (coverImagePublicId) await deleteOnCloudinary(coverImagePublicId);
 
     return res
       .status(200)
@@ -117,6 +117,29 @@ const updateBlogCoverImage = asyncHandler(
       );
   }
 );
+
+const deleteImage = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const { blogId, coverImagePublicId } = req.body;
+
+  console.log(blogId);
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    blogId,
+    {
+      $set: {
+        coverImage: "",
+      },
+    },
+    { new: true }
+  );
+
+  if (coverImagePublicId) await deleteOnCloudinary(coverImagePublicId);
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, "Blog cover image deleted successfully", updatedBlog)
+    );
+});
 
 const updateBlogDetails = asyncHandler(
   async (req: CustomRequest, res: Response) => {
@@ -141,4 +164,10 @@ const updateBlogDetails = asyncHandler(
   }
 );
 
-export { createBlog, getBlogs, updateBlogCoverImage, updateBlogDetails };
+export {
+  createBlog,
+  getBlogs,
+  updateBlogCoverImage,
+  updateBlogDetails,
+  deleteImage,
+};

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { verifyJWT } from "../middlewares/authMiddleware";
 import {
   createBlog,
+  deleteImage,
   getBlogs,
   updateBlogCoverImage,
   updateBlogDetails,
@@ -15,6 +16,7 @@ router.route("/get-blogs").get(verifyJWT, getBlogs);
 router
   .route("/update-image")
   .post(verifyJWT, uploadFile.single("coverImage"), updateBlogCoverImage);
+router.route("/delete-image").post(deleteImage);
 router.route("/update-blog").post(verifyJWT, updateBlogDetails);
 
 export default router;
