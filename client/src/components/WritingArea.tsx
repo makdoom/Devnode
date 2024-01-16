@@ -34,9 +34,11 @@ const WritingArea = ({
     setCurrentBlog((prev) => ({ ...prev, [name]: value }));
   };
 
+  const saveDraftHandler = () =>
+    mutate({ ...currentBlog, isPublished: false, isDraft: true });
+
   const publishBlogHandler = () => {
-    console.log(currentBlog);
-    mutate(currentBlog);
+    mutate({ ...currentBlog, isPublished: true, isDraft: false });
   };
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const WritingArea = ({
         )}
 
         <div className="flex gap-2">
-          <Button size="sm" variant="secondary">
+          <Button size="sm" variant="secondary" onClick={saveDraftHandler}>
             Save as Draft
           </Button>
           <Button size="sm" onClick={publishBlogHandler}>

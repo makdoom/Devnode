@@ -94,6 +94,7 @@ const Editor = ({
 
   useEffect(() => {
     if (currentBlog.subtitle) {
+      console.log(currentBlog);
       setIsSubtitleVisible(true);
     }
   }, [currentBlog?._id]);
@@ -190,7 +191,6 @@ const Editor = ({
             <Textarea
               id="subtitle-textarea"
               name="subtitle"
-              autoFocus
               placeholder="Blog Subtitle"
               value={currentBlog.subtitle}
               onChange={subtitleChangeHandler}

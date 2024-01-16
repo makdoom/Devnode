@@ -9,17 +9,18 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import BlogItem from "./BlogItem";
 import { useNavigate } from "react-router";
 import { useCreateBlog } from "@/hooks/useCreateBlog";
-import { useAppSelector } from "@/hooks/storeHook";
+import { Blog } from "@/types/blog.types";
 
 type BlogSectionPropType = {
   type: "single" | "section";
   title: string;
+  blogList?: Blog[];
 };
 
-const BlogSection = ({ type, title }: BlogSectionPropType) => {
+const BlogSection = ({ type, title, blogList }: BlogSectionPropType) => {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
-  const { blogList } = useAppSelector((state) => state.blogs);
+  // const { blogList } = useAppSelector((state) => state.blogs);
 
   const createBlogMutation = useCreateBlog();
 
@@ -49,15 +50,11 @@ const BlogSection = ({ type, title }: BlogSectionPropType) => {
   }
 
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="w-full my-4 flex-1"
-    >
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full my-4">
       <CollapsibleTrigger asChild>
         <div className="flex items-center justify-between w-full cursor-pointer">
           <h4 className="text-sm font-semibold text-primary">
-            {title} {blogList.length ? `(${blogList.length})` : ""}
+            {title} {blogList?.length ? `(${blogList.length})` : ""}
           </h4>
           {isOpen ? (
             <ChevronUp className="h-5 w-5 text-primary" />
@@ -66,7 +63,7 @@ const BlogSection = ({ type, title }: BlogSectionPropType) => {
           )}
         </div>
       </CollapsibleTrigger>
-      <CollapsibleContent className="space-y-1 mt-2 overflow-auto h-[550px]">
+      <CollapsibleContent className="space-y-1 mt-2">
         {blogList?.map((singleItem) => (
           <BlogItem
             key={singleItem._id}
