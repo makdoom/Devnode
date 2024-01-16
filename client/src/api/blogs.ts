@@ -1,4 +1,4 @@
-import { BlogPayload, BlogResponseType } from "@/types/blog.types";
+import { Blog, BlogPayload, BlogResponseType } from "@/types/blog.types";
 import Axios from "./interceptor";
 
 export const getBlogList = async () => {
@@ -18,5 +18,10 @@ export const updateBlogImage = async (payload: { file: File; id: string }) => {
   formData.append("blogId", payload.id);
 
   const response = await Axios.post("/blog/update-image", formData);
+  return response.data;
+};
+
+export const updateBlog = async (payload: Blog) => {
+  const response = await Axios.post("/blog/update-blog", payload);
   return response.data;
 };

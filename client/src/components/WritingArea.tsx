@@ -1,12 +1,14 @@
 import { PanelRightClose } from "lucide-react";
 import { Button } from "./ui/button";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/storeHook";
 import { Blog } from "@/types/blog.types";
 import Editor from "./Editor";
 import useDebounce from "@/hooks/useDebounce";
 import { updateBlogTitle } from "@/store/reducers/blogReducer";
+import useUpdateBlog from "@/hooks/useUpdateBlog";
+import { toast } from "sonner";
 
 type WritingAreaPropType = {
   isSidebarOpen: boolean;
@@ -21,8 +23,9 @@ const WritingArea = ({
   const { blogList } = useAppSelector((state) => state.blogs);
   const dispatch = useAppDispatch();
   const params = useParams();
+  const navigate = useNavigate();
 
-  // const updateBlogMutation = useUpdatedBlog();
+  const { data, mutate } = useUpdateBlog();
 
   const [currentBlog, setCurrentBlog] = useState<Blog>({} as Blog);
   const debounceUpdatedBlog = useDebounce(currentBlog, 500);
@@ -33,7 +36,7 @@ const WritingArea = ({
 
   const publishBlogHandler = () => {
     console.log(currentBlog);
-    // updateBlogMutation.mutate(currentBlog);
+    mutate(currentBlog);
   };
 
   useEffect(() => {
@@ -51,6 +54,13 @@ const WritingArea = ({
       }
     }
   }, [params, blogList]);
+
+  useEffect(() => {
+    if (data) {
+      navigate("/feeds");
+      toast.success("Blog published successfully");
+    }
+  }, [data]);
 
   return (
     <div className="flex-1 p-4 h-screen overflow-auto">

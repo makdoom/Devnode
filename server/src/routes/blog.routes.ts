@@ -4,6 +4,7 @@ import {
   createBlog,
   getBlogs,
   updateBlogCoverImage,
+  updateBlogDetails,
 } from "../controllers/blog.controller";
 import { uploadFile } from "../middlewares/multer.middleware";
 
@@ -14,5 +15,6 @@ router.route("/get-blogs").get(verifyJWT, getBlogs);
 router
   .route("/update-image")
   .post(verifyJWT, uploadFile.single("coverImage"), updateBlogCoverImage);
+router.route("/update-blog").post(verifyJWT, updateBlogDetails);
 
 export default router;

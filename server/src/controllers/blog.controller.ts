@@ -5,7 +5,6 @@ import { Blog } from "../models/blog.model";
 import { CustomRequest } from "../types/custom.types";
 import mongoose from "mongoose";
 import ApiError from "../utils/ApiError";
-import { User } from "../models/user.model";
 import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary";
 
 const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
@@ -119,4 +118,27 @@ const updateBlogCoverImage = asyncHandler(
   }
 );
 
-export { createBlog, getBlogs, updateBlogCoverImage };
+const updateBlogDetails = asyncHandler(
+  async (req: CustomRequest, res: Response) => {
+    const { _id, title, subtitle, contents, isDraft, isPublished, tags } =
+      req.body;
+
+    if (!title) throw new ApiError(400, "Can not create blog without title");
+
+    console.log("****", subtitle);
+    const updatedBlog = await Blog.findByIdAndUpdate(_id, {
+      title,
+      subtitle,
+      contents,
+      isDraft,
+      isPublished,
+      tags,
+    });
+    console.log("updated blog", updatedBlog);
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Blog updated successfully", updatedBlog));
+  }
+);
+
+export { createBlog, getBlogs, updateBlogCoverImage, updateBlogDetails };
