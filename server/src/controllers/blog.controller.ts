@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { asyncHandler } from "../utils/asynHandler";
 import ApiResponse from "../utils/ApiResponse";
-import { Blog } from "../models/blog.model";
+import { Blog, BlogScType, BlogSchemaType } from "../models/blog.model";
 import { CustomRequest } from "../types/custom.types";
 import mongoose from "mongoose";
 import ApiError from "../utils/ApiError";
@@ -27,6 +27,7 @@ const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
     coverImage,
     author: req.user._id,
   });
+
   res
     .status(201)
     .json(new ApiResponse(200, "Blog created successfully", createdBlogPost));
@@ -148,7 +149,6 @@ const updateBlogDetails = asyncHandler(
 
     if (!title) throw new ApiError(400, "Can not create blog without title");
 
-    console.log("****", subtitle);
     const updatedBlog = await Blog.findByIdAndUpdate(_id, {
       title,
       subtitle,
@@ -157,12 +157,32 @@ const updateBlogDetails = asyncHandler(
       isPublished,
       tags,
     });
-    console.log("updated blog", updatedBlog);
+
     return res
       .status(200)
       .json(new ApiResponse(200, "Blog updated successfully", updatedBlog));
   }
 );
+
+const deleteBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const { blogId } = req.body;
+
+  if (!blogId) throw new ApiError(400, "Blog id required to delete blog");
+
+  const deletedDoc = await Blog.findByIdAndDelete(blogId, { new: true });
+  if (deletedDoc && deletedDoc.coverImage) {
+    const coverImagePublicId = deletedDoc.coverImage
+      ?.split("/")
+      ?.at(-1)
+      ?.split(".")
+      ?.at(0);
+    if (coverImagePublicId) await deleteOnCloudinary(coverImagePublicId);
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Blog deleted successfully", {}));
+});
 
 export {
   createBlog,
@@ -170,4 +190,5 @@ export {
   updateBlogCoverImage,
   updateBlogDetails,
   deleteImage,
+  deleteBlog,
 };

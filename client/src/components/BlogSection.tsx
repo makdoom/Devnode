@@ -10,6 +10,8 @@ import BlogItem from "./BlogItem";
 import { useNavigate } from "react-router";
 import { useCreateBlog } from "@/hooks/useCreateBlog";
 import { Blog } from "@/types/blog.types";
+import useDeleteBlog from "@/hooks/useDeleteBlog";
+import { toast } from "sonner";
 
 type BlogSectionPropType = {
   type: "single" | "section";
@@ -23,6 +25,9 @@ const BlogSection = ({ type, title, blogList }: BlogSectionPropType) => {
   // const { blogList } = useAppSelector((state) => state.blogs);
 
   const createBlogMutation = useCreateBlog();
+  const deleteBlogMutation = useDeleteBlog(() => {
+    toast.success("Blog deleted successfully");
+  });
 
   const handleCreateNewBlog = () => {
     const blogName = blogList?.length
@@ -37,6 +42,13 @@ const BlogSection = ({ type, title, blogList }: BlogSectionPropType) => {
 
   const handleBlogItemClick = (id: string | undefined) => {
     navigate(`/create-blog/${id}`);
+  };
+
+  const handleBlogItemDelete = (id: string | undefined) => {
+    if (id) {
+      deleteBlogMutation.mutate(id);
+      console.log("blog id deleted ", id);
+    }
   };
 
   if (type === "single") {
@@ -72,6 +84,9 @@ const BlogSection = ({ type, title, blogList }: BlogSectionPropType) => {
             title={singleItem.title}
             onBlogItemClick={(id: string | undefined) =>
               handleBlogItemClick(id)
+            }
+            onBlogItemDelete={(id: string | undefined) =>
+              handleBlogItemDelete(id)
             }
           />
         ))}

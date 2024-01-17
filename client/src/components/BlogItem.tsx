@@ -13,9 +13,16 @@ type BlogItemPropType = {
   title: string;
 
   onBlogItemClick: (id: string | undefined) => void;
+  onBlogItemDelete?: (id: string | undefined) => void;
 };
 
-const BlogItem = ({ id, type, title, onBlogItemClick }: BlogItemPropType) => {
+const BlogItem = ({
+  id,
+  type,
+  title,
+  onBlogItemClick,
+  onBlogItemDelete,
+}: BlogItemPropType) => {
   const params = useParams();
 
   return (
@@ -49,7 +56,10 @@ const BlogItem = ({ id, type, title, onBlogItemClick }: BlogItemPropType) => {
             <Pin className="h-4 w-4 mr-2" />
             Pin
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => onBlogItemDelete?.(id)}
+          >
             <Trash className="h-4 w-4 mr-2 text-red-500" />
             <span className="text-red-500">Delete</span>
           </DropdownMenuItem>

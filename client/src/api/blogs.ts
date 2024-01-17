@@ -33,3 +33,8 @@ export const deleteImage = async (payload: {
   const response = await Axios.post("/blog/delete-image", payload);
   return response.data;
 };
+
+export const deleteBlog = async (blogId: string) => {
+  const response = await Axios.post("/blog/delete-blog", { blogId });
+  return response.data;
+};
