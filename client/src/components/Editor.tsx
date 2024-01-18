@@ -38,17 +38,30 @@ const Editor = ({
   // Creates a new editor instance.
   const editor: BlockNoteEditor = useBlockNote(
     {
-      initialContent: currentBlog.contents
-        ? JSON.parse(currentBlog.contents)
-        : [],
       uploadFile: uploadToTmpFilesDotOrg_DEV_ONLY,
+      onEditorReady(editor) {
+        const getBlocks = async () => {
+          const blocks = await editor.tryParseHTMLToBlocks(
+            currentBlog.contents
+          );
+          editor.replaceBlocks(editor.topLevelBlocks, blocks);
+        };
+
+        if (currentBlog.contents?.length) {
+          getBlocks();
+        }
+      },
       // Listens for when the editor's contents change.
-      onEditorContentChange: (editor) =>
-        // Converts the editor's contents to an array of Block objects.
-        handleUpdateCurrentBlog(
-          "contents",
-          JSON.stringify(editor.topLevelBlocks, null, 2)
-        ),
+      onEditorContentChange: (editor) => {
+        const saveBlocksAsHTML = async () => {
+          const html: string = await editor.blocksToHTMLLossy(
+            editor.topLevelBlocks
+          );
+          handleUpdateCurrentBlog("contents", html);
+        };
+
+        saveBlocksAsHTML();
+      },
     },
     [currentBlog._id]
   );
@@ -227,12 +240,14 @@ const Editor = ({
       </div>
 
       <div className="mt-4 text-xl">
-        <BlockNoteView
-          editor={editor}
-          theme="light"
-          className="relative -left-10 font-semibold font-inter text-xl pb-60"
-          autoCorrect="true"
-        />
+        {editor && (
+          <BlockNoteView
+            editor={editor}
+            theme="light"
+            className="relative -left-10 font-semibold font-inter text-xl pb-60"
+            autoCorrect="true"
+          />
+        )}
       </div>
     </div>
   );

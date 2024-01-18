@@ -38,3 +38,8 @@ export const deleteBlog = async (blogId: string) => {
   const response = await Axios.post("/blog/delete-blog", { blogId });
   return response.data;
 };
+
+export const getPublishedBlogs = async () => {
+  const response = await Axios.get("/blog/published-blogs");
+  return response.data?.data;
+};

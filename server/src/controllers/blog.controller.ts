@@ -184,6 +184,52 @@ const deleteBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
     .json(new ApiResponse(200, "Blog deleted successfully", {}));
 });
 
+const getPublishedBlogs = asyncHandler(
+  async (req: CustomRequest, res: Response) => {
+    const blogList = await Blog.aggregate([
+      {
+        $match: {
+          isPublished: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "users", // the name of the users collection
+          localField: "author",
+          foreignField: "_id",
+          as: "author",
+        },
+      },
+      {
+        $unwind: "$author",
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          subtitle: 1,
+          contents: 1,
+          tags: 1,
+          coverImage: 1,
+          createdAt: 1,
+          isPublished: 1,
+          isDraft: 1,
+          "author.fullName": 1,
+          "author.username": 1,
+        },
+      },
+    ]);
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, "Blog fetched successfully", blogList));
+  }
+);
+
 export {
   createBlog,
   getBlogs,
@@ -191,4 +237,5 @@ export {
   updateBlogDetails,
   deleteImage,
   deleteBlog,
+  getPublishedBlogs,
 };

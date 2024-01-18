@@ -1,18 +1,11 @@
+import { Blog } from "@/types/blog.types";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useEffect } from "react";
 
-type testType = {
-  id?: number;
-  name: string;
-  username?: string;
-  title?: string;
-  email: string;
-  description?: string;
+type BlogPropType = {
+  blog: Blog;
 };
-
-type PostType = {
-  post: testType;
-};
-const Post = ({ post }: PostType) => {
+const BlogCard = ({ blog }: BlogPropType) => {
   return (
     <div className="border rounded-md p-4 mb-5">
       <div className="flex gap-3">
@@ -22,19 +15,21 @@ const Post = ({ post }: PostType) => {
         </Avatar>
 
         <div className="text-sm flex flex-col cursor-pointer">
-          <p className="font-medium">{post.name}</p>
+          <p className="font-medium">{blog.author.fullName}</p>
           <p className="text-muted-foreground text-sm">
-            {post.email} - 05 Jan 2024
+            @{blog.author.username} - 05 Jan 2024
           </p>
         </div>
       </div>
 
       <div className="my-4 flex">
         <div className="flex-1">
-          <h2 className="font-semibold text-lg">{post.title}</h2>
-          <p className="text-muted-foreground text-sm mt-1">
-            {post.description}
-          </p>
+          <h2 className="font-semibold text-lg">{blog.title}</h2>
+          <div
+            dangerouslySetInnerHTML={{ __html: blog.contents }}
+            id="content"
+          ></div>
+          {/* <p className="text-muted-foreground text-sm mt-1">{blog.contents}</p> */}
         </div>
 
         <div className="w-[200px]">
@@ -48,4 +43,4 @@ const Post = ({ post }: PostType) => {
     </div>
   );
 };
-export default Post;
+export default BlogCard;

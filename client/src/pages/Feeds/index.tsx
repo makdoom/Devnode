@@ -1,5 +1,9 @@
-import Post from "@/components/Post";
+// import Post from "@/components/Post";
+import BlogCard from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
+import useGetAllPublishedBlogs from "@/hooks/useGetAllPublishBlogs";
+import { Blog } from "@/types/blog.types";
+// import { useGetBlogs } from "@/hooks/useGetBlogs";
 import Cookies from "js-cookie";
 import { Medal, Sparkles, TrendingUp } from "lucide-react";
 import { useState } from "react";
@@ -55,12 +59,15 @@ const postList = [
 type PostTabType = "Personalized" | "Trending" | "Featured";
 
 const Feeds = () => {
+  const { data: blogList } = useGetAllPublishedBlogs();
+
   const [postTab, setPostTab] = useState<PostTabType>("Personalized");
 
   console.log(Cookies.get("isAuthenticated"));
 
   const handleSetPostTab = (tabType: PostTabType) => setPostTab(tabType);
 
+  console.log("blogList", blogList);
   return (
     <div className="max-w-[1200px] m-auto py-4 flex gap-4">
       <div className="flex-[0.7]">
@@ -104,8 +111,8 @@ const Feeds = () => {
         </div>
 
         <div className="mt-5">
-          {postList.map((post) => (
-            <Post post={post} />
+          {blogList?.map((blog: Blog) => (
+            <BlogCard key={blog._id} blog={blog} />
           ))}
         </div>
       </div>
