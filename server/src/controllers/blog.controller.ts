@@ -10,7 +10,7 @@ import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary";
 const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
   const {
     title,
-    contents = [],
+    contents = "",
     subtitle = "",
     isDraft = true,
     isPublished = false,

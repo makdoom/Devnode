@@ -67,7 +67,6 @@ const Feeds = () => {
 
   const handleSetPostTab = (tabType: PostTabType) => setPostTab(tabType);
 
-  console.log("blogList", blogList);
   return (
     <div className="max-w-[1200px] m-auto py-4 flex gap-4">
       <div className="flex-[0.7]">

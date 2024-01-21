@@ -1,95 +1,76 @@
-import { useState } from "react";
+import { Blog } from "@/types/blog.types";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
-import { ChevronDown, ChevronUp } from "lucide-react";
-
+import { useEffect, useState } from "react";
+import { ChevronDown, ChevronUp, Loader } from "lucide-react";
 import BlogItem from "./BlogItem";
 import { useNavigate } from "react-router";
-import { useCreateBlog } from "@/hooks/useCreateBlog";
-import { Blog } from "@/types/blog.types";
-import useDeleteBlog from "@/hooks/useDeleteBlog";
-import { toast } from "sonner";
+import { useAppDispatch } from "@/hooks/storeHook";
+import { updateSelectedBlogId } from "@/store/reducers/blogReducer";
 
-type BlogSectionPropType = {
-  type: "single" | "section";
-  title: string;
-  blogList?: Blog[];
+type BlogSectionPropsType = {
+  isLoading: boolean;
+  type: "Pinned" | "Drafts" | "Published";
+  emptyText: string;
+  blogList: Blog[] | [];
 };
 
-const BlogSection = ({ type, title, blogList }: BlogSectionPropType) => {
-  const [isOpen, setIsOpen] = useState(true);
+const BlogSection = ({
+  type,
+  isLoading,
+  blogList,
+  emptyText,
+}: BlogSectionPropsType) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const navigate = useNavigate();
-  // const { blogList } = useAppSelector((state) => state.blogs);
+  const dispatch = useAppDispatch();
 
-  const createBlogMutation = useCreateBlog();
-  const deleteBlogMutation = useDeleteBlog(() => {
-    toast.success("Blog deleted successfully");
-  });
-
-  const handleCreateNewBlog = () => {
-    const blogName = blogList?.length
-      ? `Untitled-${blogList?.length}`
-      : "Untitled";
-
-    createBlogMutation.mutate({
-      title: blogName,
-      contents: "",
-    });
-  };
-
-  const handleBlogItemClick = (id: string | undefined) => {
-    navigate(`/create-blog/${id}`);
-  };
-
-  const handleBlogItemDelete = (id: string | undefined) => {
+  const navigteToBlogItem = (id: string | undefined) => {
     if (id) {
-      deleteBlogMutation.mutate(id);
-      console.log("blog id deleted ", id);
+      dispatch(updateSelectedBlogId(id));
+
+      navigate(`/blog/create/${id}`);
     }
   };
 
-  if (type === "single") {
-    return (
-      <BlogItem
-        type={type}
-        title={title}
-        onBlogItemClick={handleCreateNewBlog}
-      />
-    );
-  }
+  useEffect(() => {
+    if (blogList.length) setIsOpen(true);
+  }, [blogList]);
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full my-4">
-      <CollapsibleTrigger asChild>
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
+      <CollapsibleTrigger asChild disabled={isLoading}>
         <div className="flex items-center justify-between w-full cursor-pointer">
-          <h4 className="text-sm font-semibold text-primary">
-            {title} {blogList?.length ? `(${blogList.length})` : ""}
-          </h4>
-          {isOpen ? (
-            <ChevronUp className="h-5 w-5 text-primary" />
+          <p className="text-xs font-semibold text-primary uppercase tracking-wide">
+            {type} {blogList.length > 0 && `(${blogList.length})`}
+          </p>
+          {isLoading ? (
+            <Loader className="h-5 w-5 animate-spin mr-2" />
+          ) : isOpen ? (
+            <ChevronUp className="h-5 w-5 text-primary mr-2" />
           ) : (
-            <ChevronDown className="h-5 w-5 text-primary" />
+            <ChevronDown className="h-5 w-5 text-primary mr-2" />
           )}
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-1 mt-2">
-        {blogList?.map((singleItem) => (
-          <BlogItem
-            key={singleItem._id}
-            id={singleItem._id}
-            type="section"
-            title={singleItem.title}
-            onBlogItemClick={(id: string | undefined) =>
-              handleBlogItemClick(id)
-            }
-            onBlogItemDelete={(id: string | undefined) =>
-              handleBlogItemDelete(id)
-            }
-          />
-        ))}
+        {blogList.length ? (
+          blogList?.map((blog: Blog) => (
+            <BlogItem
+              key={blog._id}
+              id={blog._id}
+              type="edit"
+              title={blog.title}
+              onClick={(id: string | undefined) => navigteToBlogItem(id)}
+            />
+          ))
+        ) : (
+          <p className="text-sm">{emptyText}</p>
+        )}
       </CollapsibleContent>
     </Collapsible>
   );

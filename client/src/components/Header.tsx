@@ -55,7 +55,7 @@ const Header = () => {
 
       {isAuthenticated ? (
         <div className="flex gap-2">
-          <Link to="/create-blog">
+          <Link to="/blog/create">
             <Button>
               <Pencil className="h-4 w-4 mr-2" />
               Write

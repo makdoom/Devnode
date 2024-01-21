@@ -1,4 +1,4 @@
-import { Blog, BlogPayload, BlogResponseType } from "@/types/blog.types";
+import { Blog, BlogResponseType } from "@/types/blog.types";
 import Axios from "./interceptor";
 
 export const getBlogList = async () => {
@@ -6,7 +6,7 @@ export const getBlogList = async () => {
   return response.data;
 };
 
-export const createBlog = async (payload: BlogPayload) => {
+export const createBlog = async (payload: { title: string }) => {
   const response = await Axios.post("/blog/create-blog", payload);
   return response.data;
 };

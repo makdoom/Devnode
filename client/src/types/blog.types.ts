@@ -26,5 +26,6 @@ export type Blog = {
 export type BlogResponseType = {
   data: Blog[];
   statusCode: number;
+  message: string;
   success: boolean;
 };

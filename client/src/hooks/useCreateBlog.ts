@@ -1,23 +1,22 @@
 import { createBlog } from "@/api/blogs";
-import { BlogPayload } from "@/types/blog.types";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
-// import { toast } from "sonner";
 
-export const useCreateBlog = () => {
+export const useCreateBlog = (successCallback: (blogId: string) => void) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["CreateBlog"],
-    mutationFn: (payload: BlogPayload) => createBlog(payload),
-    onSuccess: () => {
+    mutationKey: ["createBlog"],
+    mutationFn: (title: string) => createBlog({ title }),
+    onSuccess: (data) => {
       toast.success("New blog created");
+      successCallback(data.data._id);
     },
     onSettled: async (_, error) => {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["GetBlogs"] });
+        await queryClient.invalidateQueries({ queryKey: ["getBlogs"] });
       }
     },
   });

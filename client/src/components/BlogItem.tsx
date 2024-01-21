@@ -1,5 +1,4 @@
-import { FilePlus2, FileText, MoreVertical, Pin, Trash } from "lucide-react";
-import { useParams } from "react-router";
+import { FilePlus, FileText, MoreVertical, Pin, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,64 +6,53 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-type BlogItemPropType = {
-  id?: string | undefined;
-  type: "single" | "section";
+type BlogItemPropsType = {
+  id?: string;
+  type: "new" | "edit";
   title: string;
 
-  onBlogItemClick: (id: string | undefined) => void;
-  onBlogItemDelete?: (id: string | undefined) => void;
+  onClick: (id?: string | undefined) => void;
 };
 
-const BlogItem = ({
-  id,
-  type,
-  title,
-  onBlogItemClick,
-  onBlogItemDelete,
-}: BlogItemPropType) => {
-  const params = useParams();
-
+const BlogItem = ({ id, type, title, onClick }: BlogItemPropsType) => {
   return (
     <div
-      onClick={() => onBlogItemClick(id)}
-      className={`flex group items-center gap-2 hover:bg-purple-100 rounded-md cursor-pointer ${
-        type === "single" ? "p-2" : "p-2"
-      }
-      ${id === params.id && "bg-purple-100 text-primary"}
-      `}
+      className={`group flex items-center gap-2 cursor-pointer hover:bg-primary-foreground p-2 rounded-sm `}
+      onClick={() => onClick(type === "edit" ? id : undefined)}
     >
-      {type === "single" ? (
-        <FilePlus2 className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+      {type === "new" ? (
+        <FilePlus className="h-4 w-4 group-hover:text-primary" />
       ) : (
-        <FileText
-          className={`h-4 w-4 text-muted-foreground group-hover:text-primary ${
-            id === params.id && "text-primary"
-          }`}
-        />
+        <FileText className="h-4 w-4 group-hover:text-primary" />
       )}
-      <span className="flex-1 text-sm group-hover:text-primary">
+      <p
+        className={`flex-1 text-sm group-hover:text-primary ${
+          type === "edit" ? "font-normal" : "font-medium"
+        }`}
+      >
         {title.length > 15 ? `${title.slice(0, 15)}...` : title}
-      </span>
+      </p>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none">
-          <MoreVertical className="h-4 w-4 text-primary" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-30" align="start" forceMount>
-          <DropdownMenuItem className="cursor-pointer">
-            <Pin className="h-4 w-4 mr-2" />
-            Pin
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => onBlogItemDelete?.(id)}
-          >
-            <Trash className="h-4 w-4 mr-2 text-red-500" />
-            <span className="text-red-500">Delete</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {type === "edit" && (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="outline-none group-hover:bg-white rounded-md p-1">
+            <MoreVertical className="h-4 w-4 text-primary" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-30" align="start" forceMount>
+            <DropdownMenuItem className="cursor-pointer">
+              <Pin className="h-4 w-4 mr-2" />
+              Pin
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              // onClick={() => onBlogItemDelete?.(id)}
+            >
+              <Trash2 className="h-4 w-4 mr-2 text-red-500" />
+              <span className="text-red-500">Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 };
