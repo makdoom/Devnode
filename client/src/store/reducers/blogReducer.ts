@@ -20,6 +20,7 @@ const blogSlice = createSlice({
     toggleSidebar: (state) => {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
+
     setBlogList: (state, action: PayloadAction<Blog[]>) => {
       state.blogList = action.payload;
     },

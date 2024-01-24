@@ -37,6 +37,12 @@ const BlogItem = ({
 }: BlogItemPropsType) => {
   const { blogId } = useParams();
 
+  const pinHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
+    onPin?.(id);
+  };
+
   return (
     <div
       className={`group flex items-center gap-2 cursor-pointer hover:bg-primary-foreground p-2 rounded-sm ${
@@ -65,7 +71,8 @@ const BlogItem = ({
           <DropdownMenuContent className="w-30" align="start" forceMount>
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() => onPin?.(id)}
+              // onClick={() => onPin?.(id)}
+              onClick={(event) => pinHandler(event)}
             >
               {blog?.isPinned ? (
                 <>

@@ -126,12 +126,6 @@ const Editor = () => {
   };
 
   useEffect(() => {
-    if (JSON.stringify(debounceUpdatedBlog).length > 2) {
-      dispatch(updateBlog(debounceUpdatedBlog));
-    }
-  }, [JSON.stringify(debounceUpdatedBlog).length]);
-
-  useEffect(() => {
     if (params?.blogId) {
       let blog = blogList.find((blog) => blog._id === params.blogId);
       if (blog) {
@@ -139,6 +133,12 @@ const Editor = () => {
       }
     }
   }, [params?.blogId]);
+
+  useEffect(() => {
+    if (JSON.stringify(debounceUpdatedBlog).length > 2 && blogList.length) {
+      dispatch(updateBlog(debounceUpdatedBlog));
+    }
+  }, [JSON.stringify(debounceUpdatedBlog).length, blogList.length]);
 
   return (
     <div ref={scrollableDivRef} className="h-full max-w-screen-lg m-auto p-4">
