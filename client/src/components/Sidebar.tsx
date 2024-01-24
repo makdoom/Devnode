@@ -28,10 +28,6 @@ const Sidebar = () => {
     createBlogMutation.mutate(newBlogName);
   };
 
-  console.log({
-    pinned: blogList.filter((item) => item.isPinned),
-    blogs: blogList,
-  });
   return (
     <div
       className={`duration-300 ease-in-out transform ${

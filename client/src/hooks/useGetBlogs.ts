@@ -13,7 +13,6 @@ const useGetBlogs = () => {
     queryKey: ["getBlogs"],
     queryFn: getBlogList,
     onSuccess: (blogData) => {
-      console.log("dispatching updated", blogData?.data);
       dispatch(setBlogList(blogData?.data || []));
     },
     onError: (error: CustomAxiosError) => {

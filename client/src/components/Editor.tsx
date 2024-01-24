@@ -135,10 +135,10 @@ const Editor = () => {
   }, [params?.blogId]);
 
   useEffect(() => {
-    if (JSON.stringify(debounceUpdatedBlog).length > 2 && blogList.length) {
+    if (JSON.stringify(debounceUpdatedBlog).length > 2) {
       dispatch(updateBlog(debounceUpdatedBlog));
     }
-  }, [JSON.stringify(debounceUpdatedBlog).length, blogList.length]);
+  }, [JSON.stringify(debounceUpdatedBlog).length]);
 
   return (
     <div ref={scrollableDivRef} className="h-full max-w-screen-lg m-auto p-4">

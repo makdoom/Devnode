@@ -17,16 +17,31 @@ const Blog = () => {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const updateBlogMutation = useUpdateBlog(() => {
-    toast.success("Blog published successfully !");
-    navigate("/feeds");
+  const updateBlogMutation = useUpdateBlog((data) => {
+    if (data?.isDraft) {
+      toast.success("Blog saved as draft successfully !");
+    } else {
+      toast.success("Blog published successfully !");
+      navigate("/feeds");
+    }
   });
 
   const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
 
-  const saveDraftHandler = () => {};
+  const saveDraftHandler = () => {
+    const blogToSaveAsDraft = blogList.find(
+      (item) => item._id === selectedBlogId
+    );
+    if (blogToSaveAsDraft) {
+      updateBlogMutation.mutate({
+        ...blogToSaveAsDraft,
+        isPublished: false,
+        isDraft: true,
+      });
+    }
+  };
 
   const publishBlogHandler = () => {
     const blogToPublish = blogList.find((item) => item._id === selectedBlogId);
