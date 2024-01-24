@@ -1,4 +1,24 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, {
+  Document,
+  ObjectId,
+  Schema,
+  Types,
+  InferSchemaType,
+} from "mongoose";
+
+export type BlogSchemaType = {
+  title: string;
+  subtitle: string;
+  contents: string;
+  coverImage: string;
+  tags: string[];
+  author: ObjectId;
+  isDraft: boolean;
+  isPublished: boolean;
+  isPinned: boolean;
+};
+
+interface BlogModel extends BlogSchemaType, Document {}
 
 // Create Blog Schema
 const blogSchema = new Schema(
@@ -7,16 +27,35 @@ const blogSchema = new Schema(
       type: String,
       trim: true,
     },
+    subtitle: {
+      type: String,
+      trim: true,
+    },
     contents: {
       type: String,
       trim: true,
     },
-    authorId: {
+    coverImage: {
+      type: String,
+    },
+    tags: { type: [String] },
+    author: {
       type: mongoose.Types.ObjectId,
       ref: "User",
+    },
+    isDraft: {
+      type: Boolean,
+    },
+    isPublished: {
+      type: Boolean,
+    },
+    isPinned: {
+      type: Boolean,
     },
   },
   { timestamps: true }
 );
 
-export const Blog = mongoose.model("Blog", blogSchema);
+export type BlogScType = InferSchemaType<typeof blogSchema>;
+
+export const Blog = mongoose.model<BlogModel>("Blog", blogSchema);

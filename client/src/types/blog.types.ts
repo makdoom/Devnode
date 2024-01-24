@@ -1,15 +1,26 @@
 export type BlogPayload = {
   title: string;
-  contents: string;
+  subtitle?: string;
+  contents?: string;
+  coverImage?: string;
+  tags?: string[];
+  isDraft?: boolean;
+  isPublished?: boolean;
+  isPinned?: boolean;
 };
 
 export type Blog = {
   _id: string;
   title: string;
+  subtitle?: string;
+  coverImage?: string;
+  isDraft?: boolean;
+  isPublished?: boolean;
   contents: string;
+  isPinned: boolean;
   author: {
     fullName: string;
-    email: string;
+    username: string;
   };
   createdAt: string;
 };
@@ -17,5 +28,6 @@ export type Blog = {
 export type BlogResponseType = {
   data: Blog[];
   statusCode: number;
+  message: string;
   success: boolean;
 };

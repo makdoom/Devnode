@@ -3,7 +3,8 @@ import { useLayoutEffect } from "react";
 const useAutoSizeTextArea = (
   id: string,
   textAreaRef: HTMLTextAreaElement | null,
-  value: string
+  value: string,
+  isVisible?: boolean
 ) => {
   useLayoutEffect(() => {
     const textArea = textAreaRef ?? document.getElementById(id);
@@ -13,7 +14,7 @@ const useAutoSizeTextArea = (
       const scrollHeight = textArea.scrollHeight;
       textArea.style.height = scrollHeight + "px";
     }
-  }, [textAreaRef, id, value]);
+  }, [textAreaRef, id, value, isVisible]);
 };
 
 export default useAutoSizeTextArea;

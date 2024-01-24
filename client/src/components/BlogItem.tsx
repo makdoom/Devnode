@@ -1,58 +1,101 @@
-import { FilePlus2, FileText, MoreVertical, Pin, Trash } from "lucide-react";
-import { useParams } from "react-router";
+import {
+  FilePlus,
+  FileText,
+  MoreVertical,
+  Pin,
+  PinOff,
+  Trash2,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useParams } from "react-router";
+import { Blog } from "@/types/blog.types";
 
-type BlogItemPropType = {
-  id?: string | undefined;
-  type: "single" | "section";
+type BlogItemPropsType = {
+  id?: string;
+  type: "new" | "edit";
   title: string;
+  blog?: Blog;
 
-  onBlogItemClick: (id: string | undefined) => void;
+  onClick: (id?: string | undefined) => void;
+  onDelete?: (id: string | undefined) => void;
+  onPin?: (id: string | undefined) => void;
 };
 
-const BlogItem = ({ id, type, title, onBlogItemClick }: BlogItemPropType) => {
-  const params = useParams();
+const BlogItem = ({
+  id,
+  type,
+  title,
+  blog,
+  onClick,
+  onDelete,
+  onPin,
+}: BlogItemPropsType) => {
+  const { blogId } = useParams();
+
+  const pinHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
+    onPin?.(id);
+  };
 
   return (
     <div
-      onClick={() => onBlogItemClick(id)}
-      className={`flex group items-center gap-2 hover:bg-purple-100 rounded-md cursor-pointer ${
-        type === "single" ? "p-2" : "p-2"
-      }
-      ${id === params.id && "bg-purple-100 text-primary"}
-      `}
+      className={`group flex items-center gap-2 cursor-pointer hover:bg-primary-foreground p-2 rounded-sm ${
+        blogId && blogId == id && "bg-secondary"
+      }`}
+      onClick={() => onClick(type === "edit" ? id : undefined)}
     >
-      {type === "single" ? (
-        <FilePlus2 className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+      {type === "new" ? (
+        <FilePlus className="h-4 w-4 group-hover:text-primary" />
       ) : (
-        <FileText
-          className={`h-4 w-4 text-muted-foreground group-hover:text-primary ${
-            id === params.id && "text-primary"
-          }`}
-        />
+        <FileText className="h-4 w-4 group-hover:text-primary" />
       )}
-      <span className="flex-1 text-sm group-hover:text-primary">{title}</span>
+      <p
+        className={`flex-1 text-sm group-hover:text-primary ${
+          type === "edit" ? "font-normal" : "font-medium"
+        }`}
+      >
+        {title.length > 15 ? `${title.slice(0, 15)}...` : title}
+      </p>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none">
-          <MoreVertical className="h-4 w-4 text-primary" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-30" align="start" forceMount>
-          <DropdownMenuItem className="cursor-pointer">
-            <Pin className="h-4 w-4 mr-2" />
-            Pin
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            <Trash className="h-4 w-4 mr-2 text-red-500" />
-            <span className="text-red-500">Delete</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {type === "edit" && (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="outline-none group-hover:bg-white rounded-md p-1">
+            <MoreVertical className="h-4 w-4 text-primary" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-30" align="start" forceMount>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              // onClick={() => onPin?.(id)}
+              onClick={(event) => pinHandler(event)}
+            >
+              {blog?.isPinned ? (
+                <>
+                  <PinOff className="h-4 w-4 mr-2" />
+                  Unpin
+                </>
+              ) : (
+                <>
+                  <Pin className="h-4 w-4 mr-2" />
+                  Pin
+                </>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => onDelete?.(id)}
+            >
+              <Trash2 className="h-4 w-4 mr-2 text-red-500" />
+              <span className="text-red-500">Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 };
