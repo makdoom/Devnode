@@ -1,71 +1,28 @@
-// import Post from "@/components/Post";
 import BlogCard from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
 import useGetAllPublishedBlogs from "@/hooks/useGetAllPublishBlogs";
 import { Blog } from "@/types/blog.types";
-// import { useGetBlogs } from "@/hooks/useGetBlogs";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { Medal, Sparkles, TrendingUp } from "lucide-react";
 import { useState } from "react";
-
-const postList = [
-  {
-    id: 1,
-    name: "Makdoom Shaikh",
-    username: "makdoom",
-    email: "makshaikh99@gmail.com",
-    title: "React Typescript",
-    description:
-      "Fetching and parsing meta tags from web pages is a common task in web development, particularly useful for SEO analysis,",
-  },
-  {
-    id: 1,
-    name: "Makdoom Shaikh",
-    username: "makdoom",
-    email: "makshaikh99@gmail.com",
-    title: "React Typescript",
-    description:
-      "Fetching and parsing meta tags from web pages is a common task in web development, particularly useful for SEO analysis,",
-  },
-  {
-    id: 1,
-    name: "Makdoom Shaikh",
-    username: "makdoom",
-    email: "makshaikh99@gmail.com",
-    title: "React Typescript",
-    description:
-      "Fetching and parsing meta tags from web pages is a common task in web development, particularly useful for SEO analysis,",
-  },
-  {
-    id: 2,
-    name: "Mahek Shaikh",
-    username: "makdoom",
-    email: "makshaikh99@gmail.com",
-    title: "React Typescript",
-    description:
-      "Fetching and parsing meta tags from web pages is a common task in web development, particularly useful for SEO analysis,",
-  },
-  {
-    id: 3,
-    name: "Adnan Kazi",
-    username: "adnan",
-    email: "adnan33@gmail.com",
-    title: "React Typescript",
-    description:
-      "Fetching and parsing meta tags from web pages is a common task in web development, particularly useful for SEO analysis,",
-  },
-];
+import { useNavigate } from "react-router";
 
 type PostTabType = "Personalized" | "Trending" | "Featured";
 
 const Feeds = () => {
   const { data: blogList } = useGetAllPublishedBlogs();
 
+  const navigate = useNavigate();
   const [postTab, setPostTab] = useState<PostTabType>("Personalized");
 
-  console.log(Cookies.get("isAuthenticated"));
-
   const handleSetPostTab = (tabType: PostTabType) => setPostTab(tabType);
+
+  const navigateToPreviewBlog = (username: string, blogId: string) => {
+    if (username && blogId) {
+      console.log(username, blogId);
+      navigate(`/blog/${username}/${blogId}`);
+    }
+  };
 
   return (
     <div className="max-w-[1200px] m-auto py-4 flex gap-4">
@@ -111,7 +68,11 @@ const Feeds = () => {
 
         <div className="mt-5">
           {blogList?.map((blog: Blog) => (
-            <BlogCard key={blog._id} blog={blog} />
+            <BlogCard
+              key={blog._id}
+              blog={blog}
+              navigateToPreviewBlog={navigateToPreviewBlog}
+            />
           ))}
         </div>
       </div>

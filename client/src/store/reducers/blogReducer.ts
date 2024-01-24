@@ -4,12 +4,14 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 type initialStateType = {
   isSidebarOpen: boolean;
   blogList: Blog[];
+  publishBlogList: Blog[];
   selectedBlogId: string;
 };
 
 const initialState: initialStateType = {
   isSidebarOpen: true,
   blogList: [],
+  publishBlogList: [],
   selectedBlogId: "",
 };
 
@@ -37,10 +39,20 @@ const blogSlice = createSlice({
     updateSelectedBlogId: (state, action: PayloadAction<string>) => {
       state.selectedBlogId = action.payload;
     },
+
+    setPublishedBlogs: (state, action: PayloadAction<Blog[]>) => {
+      console.log(action.payload);
+      state.publishBlogList = action.payload;
+    },
   },
 });
 
-export const { setBlogList, updateBlog, toggleSidebar, updateSelectedBlogId } =
-  blogSlice.actions;
+export const {
+  setBlogList,
+  updateBlog,
+  toggleSidebar,
+  updateSelectedBlogId,
+  setPublishedBlogs,
+} = blogSlice.actions;
 
 export default blogSlice.reducer;

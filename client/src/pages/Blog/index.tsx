@@ -75,7 +75,7 @@ const Blog = () => {
           className={`p-3 flex items-center ${
             isSidebarOpen ? "justify-end" : "justify-between"
           }
-          ${params?.blogId && "border-b border-secondary"}
+          ${params?.blogId ? "border-b border-secondary" : ""}
           `}
         >
           {!isSidebarOpen && (

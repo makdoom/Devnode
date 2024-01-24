@@ -12,6 +12,7 @@ import Register from "@/pages/Register";
 import CreateBlog from "@/pages/CreateBlog";
 import Blog from "@/pages/Blog";
 import Editor from "@/components/Editor";
+import PreviewBlog from "@/pages/PreviewBlog";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,8 +28,9 @@ const router = createBrowserRouter(
       <Route path="/blog" element={<Blog />}>
         <Route path="/blog/create" element={<CreateBlog />} />
         <Route path="/blog/create/:blogId" element={<Editor />} />
-        <Route path="/blog/edit" element={<h1>Edit</h1>} />
       </Route>
+      {/* <Route path="/blog/edit" element={<h1>Edit</h1>} /> */}
+      <Route path="/blog/:username/:blogId" element={<PreviewBlog />} />
 
       {/* <Route path="/create-blog" element={<CreatePost />} /> */}
       {/* <Route path="/create-blog/:id" element={<CreatePost />} /> */}
