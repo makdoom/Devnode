@@ -7,11 +7,9 @@ const useDeleteBlog = (successCallback: () => void) => {
   return useMutation({
     mutationKey: ["DeleteBlog"],
     mutationFn: (blogId: string) => deleteBlog(blogId),
-    onSuccess: () => {
-      successCallback();
-    },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["GetBlogs"] });
+      queryClient.invalidateQueries({ queryKey: ["getBlogs"] });
+      successCallback();
     },
   });
 };

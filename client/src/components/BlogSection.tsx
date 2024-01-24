@@ -10,6 +10,9 @@ import BlogItem from "./BlogItem";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "@/hooks/storeHook";
 import { updateSelectedBlogId } from "@/store/reducers/blogReducer";
+import useDeleteBlog from "@/hooks/useDeleteBlog";
+import { toast } from "sonner";
+import useUpdateBlog from "@/hooks/useUpdateBlog";
 
 type BlogSectionPropsType = {
   isLoading: boolean;
@@ -28,12 +31,34 @@ const BlogSection = ({
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const updateBlogMutation = useUpdateBlog(() => {});
+  const deleteBlogMutation = useDeleteBlog(() => {
+    toast.success("Blog deleted successfully");
+    navigate("/blog/create");
+  });
 
   const navigteToBlogItem = (id: string | undefined) => {
     if (id) {
       dispatch(updateSelectedBlogId(id));
-
       navigate(`/blog/create/${id}`);
+    }
+  };
+
+  const handlePinBlog = (id: string | undefined) => {
+    if (id) {
+      const blogToUpdate = blogList.find((item) => item._id === id);
+      if (blogToUpdate) {
+        updateBlogMutation.mutate({
+          ...blogToUpdate,
+          isPinned: !blogToUpdate.isPinned,
+        });
+      }
+    }
+  };
+
+  const handleDeleteBlog = (id: string | undefined) => {
+    if (id) {
+      deleteBlogMutation.mutate(id);
     }
   };
 
@@ -65,7 +90,10 @@ const BlogSection = ({
               id={blog._id}
               type="edit"
               title={blog.title}
+              blog={blog}
               onClick={(id: string | undefined) => navigteToBlogItem(id)}
+              onDelete={(id) => handleDeleteBlog(id)}
+              onPin={(id) => handlePinBlog(id)}
             />
           ))
         ) : (

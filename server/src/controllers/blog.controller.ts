@@ -8,23 +8,17 @@ import ApiError from "../utils/ApiError";
 import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary";
 
 const createBlog = asyncHandler(async (req: CustomRequest, res: Response) => {
-  const {
-    title,
-    contents = "",
-    subtitle = "",
-    isDraft = true,
-    isPublished = false,
-    coverImage = "",
-  } = req.body;
+  const { title } = req.body;
 
   // Create new blog post
   const createdBlogPost = await Blog.create({
     title,
-    contents,
-    subtitle,
-    isDraft,
-    isPublished,
-    coverImage,
+    contents: "",
+    subtitle: "",
+    isDraft: true,
+    isPublished: false,
+    coverImage: "",
+    isPinned: false,
     author: req.user._id,
   });
 
@@ -65,6 +59,7 @@ const getBlogs = asyncHandler(async (req: CustomRequest, res: Response) => {
         coverImage: 1,
         createdAt: 1,
         isPublished: 1,
+        isPinned: 1,
         isDraft: 1,
         "author.fullName": 1,
         "author.username": 1,
@@ -122,7 +117,6 @@ const updateBlogCoverImage = asyncHandler(
 const deleteImage = asyncHandler(async (req: CustomRequest, res: Response) => {
   const { blogId, coverImagePublicId } = req.body;
 
-  console.log(blogId);
   const updatedBlog = await Blog.findByIdAndUpdate(
     blogId,
     {
@@ -144,8 +138,16 @@ const deleteImage = asyncHandler(async (req: CustomRequest, res: Response) => {
 
 const updateBlogDetails = asyncHandler(
   async (req: CustomRequest, res: Response) => {
-    const { _id, title, subtitle, contents, isDraft, isPublished, tags } =
-      req.body;
+    const {
+      _id,
+      title,
+      subtitle,
+      contents,
+      isDraft,
+      isPublished,
+      tags,
+      isPinned,
+    } = req.body;
 
     if (!title) throw new ApiError(400, "Can not create blog without title");
 
@@ -155,6 +157,7 @@ const updateBlogDetails = asyncHandler(
       contents,
       isDraft,
       isPublished,
+      isPinned,
       tags,
     });
 

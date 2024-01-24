@@ -6,6 +6,7 @@ export type BlogPayload = {
   tags?: string[];
   isDraft?: boolean;
   isPublished?: boolean;
+  isPinned?: boolean;
 };
 
 export type Blog = {
@@ -16,6 +17,7 @@ export type Blog = {
   isDraft?: boolean;
   isPublished?: boolean;
   contents: string;
+  isPinned: boolean;
   author: {
     fullName: string;
     username: string;

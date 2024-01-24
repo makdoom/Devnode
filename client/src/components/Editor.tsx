@@ -28,6 +28,7 @@ const Editor = () => {
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const subtitleRef = useRef<HTMLTextAreaElement>(null);
   const coverImageFileRef = useRef<HTMLInputElement>(null);
+  const scrollableDivRef = useRef<HTMLDivElement | null>(null);
 
   useAutoSizeTextArea("title-textarea", titleRef.current, currentBlog.title);
   useAutoSizeTextArea(
@@ -55,7 +56,6 @@ const Editor = () => {
           );
           editor.replaceBlocks(editor.topLevelBlocks, blocks);
         };
-
         if (currentBlog.contents?.length) {
           getBlocks();
         }
@@ -68,8 +68,11 @@ const Editor = () => {
           );
           setCurrentBlog((prev) => ({ ...prev, contents: html }));
         };
-
         saveBlocksAsHTML();
+        if (scrollableDivRef.current) {
+          scrollableDivRef.current.scrollTop =
+            scrollableDivRef.current?.scrollHeight + 1000;
+        }
       },
     },
     [currentBlog._id]
@@ -138,7 +141,7 @@ const Editor = () => {
   }, [params?.blogId]);
 
   return (
-    <div className="h-full max-w-screen-lg m-auto p-4">
+    <div ref={scrollableDivRef} className="h-full max-w-screen-lg m-auto p-4">
       {currentBlog.coverImage && (
         <div className="w-full relative h-[500px]">
           {coverImageMutation.isLoading ||
@@ -260,7 +263,6 @@ const Editor = () => {
           editor={editor}
           theme="light"
           className="relative -left-10 font-semibold font-inter text-xl pb-60"
-          autoCorrect="true"
         />
       </div>
     </div>

@@ -15,6 +15,7 @@ export type BlogSchemaType = {
   author: ObjectId;
   isDraft: boolean;
   isPublished: boolean;
+  isPinned: boolean;
 };
 
 interface BlogModel extends BlogSchemaType, Document {}
@@ -46,6 +47,9 @@ const blogSchema = new Schema(
       type: Boolean,
     },
     isPublished: {
+      type: Boolean,
+    },
+    isPinned: {
       type: Boolean,
     },
   },

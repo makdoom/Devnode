@@ -17,7 +17,7 @@ const Blog = () => {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const createBlogMutation = useUpdateBlog(() => {
+  const updateBlogMutation = useUpdateBlog(() => {
     toast.success("Blog published successfully !");
     navigate("/feeds");
   });
@@ -31,7 +31,7 @@ const Blog = () => {
   const publishBlogHandler = () => {
     const blogToPublish = blogList.find((item) => item._id === selectedBlogId);
     if (blogToPublish) {
-      createBlogMutation.mutate({
+      updateBlogMutation.mutate({
         ...blogToPublish,
         isPublished: true,
         isDraft: false,
@@ -52,7 +52,7 @@ const Blog = () => {
   if (!isAuthenticated) return <div></div>;
 
   return (
-    <div className="w-screen h-screen overflow-hidden flex">
+    <div className="w-screen h-screen flex">
       <Sidebar />
 
       <div className="flex-1">
@@ -85,7 +85,10 @@ const Blog = () => {
             </div>
           )}
         </div>
-        <Outlet />
+
+        <div className="h-[calc(100vh-60px)] overflow-auto">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

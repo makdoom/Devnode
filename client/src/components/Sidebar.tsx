@@ -22,7 +22,10 @@ const Sidebar = () => {
   });
 
   const handleCreateBlog = () => {
-    createBlogMutation.mutate("Untitled-100");
+    const newBlogName = blogList.length
+      ? `Untitled-${blogList.length + 1}`
+      : "Untitled";
+    createBlogMutation.mutate(newBlogName);
   };
 
   return (
@@ -69,7 +72,7 @@ const Sidebar = () => {
             isLoading={isLoading}
             type="Pinned"
             emptyText="Your pinned drafts would appear here."
-            blogList={[]}
+            blogList={blogList.filter((blog) => blog.isPinned)}
           />
         </div>
 

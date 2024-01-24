@@ -1,16 +1,21 @@
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/hooks/storeHook";
 import { useCreateBlog } from "@/hooks/useCreateBlog";
 import { FilePlus } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const CreateBlog = () => {
+  const { blogList } = useAppSelector((state) => state.blogs);
   const navigate = useNavigate();
   const createBlogMutation = useCreateBlog((blogId) => {
     navigate(`/blog/create/${blogId}`);
   });
 
   const handleCreateBlog = () => {
-    createBlogMutation.mutate("Untitled-100");
+    const newBlogName = blogList.length
+      ? `Untitled-${blogList.length + 1}`
+      : "Untitled";
+    createBlogMutation.mutate(newBlogName);
   };
 
   return (
